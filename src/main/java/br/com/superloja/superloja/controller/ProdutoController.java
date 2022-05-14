@@ -14,7 +14,7 @@ public class ProdutoController {
 	private final int ROW_PER_PAGE = 5;
 	
 	@GetMapping(value = "/start", produces = MediaType.APPLICATION_JSON_VALUE)
-	private void start() {
+	private void onStart() {
 		System.out.println("Hello");
 	}
 
