@@ -1,4 +1,4 @@
-package br.com.superloja.superloja;
+package br.com.superloja;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

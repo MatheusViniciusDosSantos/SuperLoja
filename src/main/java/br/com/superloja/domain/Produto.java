@@ -1,4 +1,4 @@
-package br.com.superloja.superloja.domain;
+package br.com.superloja.domain;
 
 import java.io.Serializable;
 
@@ -20,7 +20,7 @@ import lombok.Setter;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Getter
 @Setter
-public class ProdutoDomain implements Serializable {
+public class Produto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
