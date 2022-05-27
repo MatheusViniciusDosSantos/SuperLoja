@@ -51,7 +51,7 @@ public class ProdutoController {
 		}
 	}
 	
-	@GetMapping(value = "produto/{id}", produces =
+	@GetMapping(value = "/produto/{id}", produces =
 			MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Produto> findProdutoById(@PathVariable long id) {
 		try {
@@ -79,7 +79,7 @@ public class ProdutoController {
 		}
 	}
 	
-	@PutMapping(value = "/aluno/{id}")
+	@PutMapping(value = "/produto/{id}")
 	public ResponseEntity<Produto> updateProduto(@Valid @RequestBody Produto produto,
 			@PathVariable long id) {
 		try {
@@ -96,7 +96,7 @@ public class ProdutoController {
 		
 	}
 	
-	@DeleteMapping(path = "produto/{id}")
+	@DeleteMapping(path = "/produto/{id}")
 	public ResponseEntity<Void> deleteProdutoById(@PathVariable long id) {
 		try {
 			produtoService.deleteById(id);
