@@ -1,6 +1,8 @@
 package br.com.superloja.domain;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,6 +34,15 @@ public class Produto implements Serializable {
 	private String descricao;
 	
 	private Double preco;
+	
+	private char status;
+	
+	private Date dataCadastro;
+	
+	public Produto() {
+		dataCadastro = Calendar.getInstance().getTime();
+	}
+
 
 	public long getId() {
 		return id;
@@ -57,6 +68,15 @@ public class Produto implements Serializable {
 		this.preco = preco;
 	}
 	
+	public char getStatus() {
+		return status;
+	}
+
+	public void setStatus(char status) {
+		this.status = status;
+	}
 	
-	
+	public Date getDataCadastro() {
+		return dataCadastro;
+	}
 }

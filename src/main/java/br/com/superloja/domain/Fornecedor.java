@@ -37,6 +37,10 @@ public class Fornecedor implements Serializable {
 	
 	private String cnpj;
 	
+	private String endereco;
+	
+	private char status;
+	
 	private Date dataCadastro;
 	
 	public Fornecedor() {
@@ -73,6 +77,22 @@ public class Fornecedor implements Serializable {
 
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
+	}
+	
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+	
+	public char getStatus() {
+		return status;
+	}
+
+	public void setStatus(char status) {
+		this.status = status;
 	}
 	
 	public Date getDataCadastro() {
