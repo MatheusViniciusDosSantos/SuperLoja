@@ -69,7 +69,7 @@ public class ProdutoController {
 	public ResponseEntity<Produto> addProduto(@RequestBody Produto produto) throws URISyntaxException {
 		try {
 			Produto novoProduto = produtoService.save(produto);
-			return ResponseEntity.created(new URI("/api/aluno" + novoProduto.getId())).body(produto);
+			return ResponseEntity.created(new URI("/api/produto" + novoProduto.getId())).body(produto);
 		} catch (ResourceAlreadyExistsException ex) {
 			logger.error(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
