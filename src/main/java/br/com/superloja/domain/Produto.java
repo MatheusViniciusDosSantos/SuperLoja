@@ -14,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,19 +31,22 @@ public class Produto implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
+	@Schema(description = "Descrição/nome do produto", example = "Caixa de Leite")
 	@NotBlank
 	private String descricao;
 	
+	@Schema(description = "Preço do produto", example = "4.99")
 	private Double preco;
 	
+	@Schema(description = "Status do produto", example = "A")
 	private char status;
 	
+	@Schema(description = "Data de Cadastro dos produtos. Gerado na criação de um novo produto")
 	private Date dataCadastro;
 	
 	public Produto() {
 		dataCadastro = Calendar.getInstance().getTime();
 	}
-
 
 	public long getId() {
 		return id;

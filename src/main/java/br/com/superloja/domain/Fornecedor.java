@@ -14,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,17 +31,23 @@ public class Fornecedor implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
+	@Schema(description = "Nome do fornecedor", example = "Laticínios LTDA")
 	@NotBlank
 	private String nome;
 	
+	@Schema(description = "Um contato do fornecedor", example = "laticinios@gmail.com")
 	private String contato;
 	
+	@Schema(description = "CNPJ do fornecedor", example = "00.000.000/0000-00")
 	private String cnpj;
 	
+	@Schema(description = "Endereço do fornecedor", example = "Fazenda Laticínios, nas redondezas da saida norte de Paranavaí")
 	private String endereco;
 	
+	@Schema(description = "Status do fornecedor", example = "A")
 	private char status;
 	
+	@Schema(description = "Data de Cadastro dos fornecedores. Gerado na criação de um novo produto")
 	private Date dataCadastro;
 	
 	public Fornecedor() {

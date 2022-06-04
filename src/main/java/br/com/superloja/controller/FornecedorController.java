@@ -43,11 +43,11 @@ public class FornecedorController {
 			MediaType.APPLICATION_JSON_VALUE, produces = 
 				MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Page<Fornecedor>> findAll(
-			@RequestBody(required=false) String nome, Pageable pegeable) {
+			@RequestBody(required=false) String nome, Pageable pageable) {
 		if(StringUtils.isEmpty(nome)) {
-			return ResponseEntity.ok(fornecedorService.findAll(pegeable));
+			return ResponseEntity.ok(fornecedorService.findAll(pageable));
 		} else {
-			return ResponseEntity.ok(fornecedorService.findAllByNome(nome, pegeable));
+			return ResponseEntity.ok(fornecedorService.findAllByNome(nome, pageable));
 		}
 	}
 	
