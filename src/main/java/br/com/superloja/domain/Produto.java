@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
@@ -35,8 +37,24 @@ public class Produto implements Serializable {
 	@NotBlank
 	private String descricao;
 	
-	@Schema(description = "Preço do produto", example = "4.99")
-	private Double preco;
+	@Schema(description = "Valor de venda do produto", example = "4.99")
+	private Double valorVenda;
+	
+	@Schema(description = "Valor de custo do produto", example = "3.00")
+	private Double valorCusto;
+	
+	@Schema(description = "Quantidade de produtos em estoque", example  = "30")
+	private int quantidadeEstoque;
+	
+	@ManyToOne
+	@JoinColumn(name = "idMarca")
+	@Schema(description = "Marca do produto", example = "Piracanjuba")
+	private Marca marca;
+	
+	@ManyToOne
+	@JoinColumn(name = "idCategoria")
+	@Schema(description = "Categoria do produto", example = "Laticínios")
+	private Categoria categoria;
 	
 	@Schema(description = "Status do produto", example = "A")
 	private char status;
@@ -64,12 +82,44 @@ public class Produto implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public Double getPreco() {
-		return preco;
+	public Double getValorVenda() {
+		return valorVenda;
 	}
 
-	public void setPreco(Double preco) {
-		this.preco = preco;
+	public void setValorVenda(Double valorVenda) {
+		this.valorVenda = valorVenda;
+	}
+	
+	public Double getValorCusto() {
+		return valorCusto;
+	}
+	
+	public void setValorCusto(Double valorCusto) {
+		this.valorCusto = valorCusto;
+	}
+	
+	public int getQuantidadeEstoque() {
+		return quantidadeEstoque;
+	}
+	
+	public void setQuantidadeEstoque(int quantidadeEstoque) {
+		this.quantidadeEstoque = quantidadeEstoque;
+	}
+	
+	public Marca getMarca() {
+		return marca;
+	}
+	
+	public void setMarca(Marca marca)  {
+		this.marca = marca;
+	}
+	
+	public Categoria getCategoria() {
+		return categoria;
+	}
+	
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 	
 	public char getStatus() {

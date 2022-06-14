@@ -25,10 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.com.superloja.domain.Produto;
+import br.com.superloja.domain.Usuario;
 import br.com.superloja.exception.BadResourceException;
 import br.com.superloja.exception.ResourceAlreadyExistsException;
 import br.com.superloja.exception.ResourceNotFoundException;
 import br.com.superloja.service.ProdutoService;
+import br.com.superloja.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,42 +42,42 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @RestController
 @RequestMapping("/api")
-@Tag(name = "produto", description = "API de Produtos")
-public class ProdutoController {
+@Tag(name = "usuario", description = "API de Usuario")
+public class UsuarioController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final int ROW_PER_PAGE = 5;
 	
 	@Autowired
-	private ProdutoService produtoService;
+	private UsuarioService usuarioService;
 	
-	@Operation(summary = "Busca produtos", description = "Buscar todos os Produtos, buscar produtos por descrição", tags = {"produto"})
-	@GetMapping(value = "/produto", consumes = 
+	@Operation(summary = "Busca usuarios", description = "Buscar todos os usuarios, buscar usuarios por nome", tags = {"usuario"})
+	@GetMapping(value = "/usuario", consumes = 
 			MediaType.APPLICATION_JSON_VALUE, produces = 
 				MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Page<Produto>> findAll(
+	public ResponseEntity<Page<Usuario>> findAll(
 			@Parameter(description = "Descrição para pesquisa", allowEmptyValue = true)
-			@RequestBody(required=false) String descricao,
+			@RequestBody(required=false) String nome,
 			@Parameter(description = "Paginação", example = "{\"page\":0,\"size\":1}", allowEmptyValue = true)
 			 Pageable pageable)	{
-		if(StringUtils.isEmpty(descricao)) {
-			return ResponseEntity.ok(produtoService.findAll(pageable));
+		if(StringUtils.isEmpty(nome)) {
+			return ResponseEntity.ok(usuarioService.findAll(pageable));
 		} else {
-			return ResponseEntity.ok(produtoService.findAllByDescricao(descricao, pageable));
+			return ResponseEntity.ok(usuarioService.findAllByNome(nome, pageable));
 		}
 	}
 	
-	@Operation(summary = "Busca ID", description = "Buscar Produto por ID", tags = {"produto"})
+	@Operation(summary = "Busca ID", description = "Buscar usuario por ID", tags = {"usuario"})
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Sucesso",
-					content = @Content(schema = @Schema(implementation = Produto.class))),
-			@ApiResponse(responseCode = "404", description = "Produto não encontrado")
+					content = @Content(schema = @Schema(implementation = Usuario.class))),
+			@ApiResponse(responseCode = "404", description = "Usuario não encontrado")
 	})
-	@GetMapping(value = "/produto/{id}", produces =
+	@GetMapping(value = "/usuario/{id}", produces =
 			MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Produto> findProdutoById(@PathVariable long id) {
+	public ResponseEntity<Usuario> findUsuarioById(@PathVariable long id) {
 		try {
-			Produto produto = produtoService.findById(id);
-			return ResponseEntity.ok(produto);
+			Usuario usuario = usuarioService.findById(id);
+			return ResponseEntity.ok(usuario);
 		} catch (ResourceNotFoundException ex) {
 			logger.error(ex.getMessage());
 			
@@ -84,12 +86,12 @@ public class ProdutoController {
 	
 	}
 	
-	@Operation(summary = "Adicionar Produto", description = "Adicionar novo produto informado no banco de dados", tags = {"produto"})
-	@PostMapping(value = "/produto")
-	public ResponseEntity<Produto> addProduto(@RequestBody Produto produto) throws URISyntaxException {
+	@Operation(summary = "Adicionar usuario", description = "Adicionar novo usuario informado no banco de dados", tags = {"usuario"})
+	@PostMapping(value = "/usuario")
+	public ResponseEntity<Usuario> addUsuario(@RequestBody Usuario usuario) throws URISyntaxException {
 		try {
-			Produto novoProduto = produtoService.save(produto);
-			return ResponseEntity.created(new URI("/api/produto" + novoProduto.getId())).body(produto);
+			Usuario novoUsuario = usuarioService.save(usuario);
+			return ResponseEntity.created(new URI("/api/usuario" + novoUsuario.getId())).body(usuario);
 		} catch (ResourceAlreadyExistsException ex) {
 			logger.error(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -99,13 +101,13 @@ public class ProdutoController {
 		}
 	}
 	
-	@Operation(summary = "Alterar Produto", description = "Alterar valores do produto com id selecionado", tags = {"produto"})
-	@PutMapping(value = "/produto/{id}")
-	public ResponseEntity<Produto> updateProduto(@Valid @RequestBody Produto produto,
+	@Operation(summary = "Alterar Usuario", description = "Alterar valores do usuario com id selecionado", tags = {"usuario"})
+	@PutMapping(value = "/usuario/{id}")
+	public ResponseEntity<Usuario> updateUsuario(@Valid @RequestBody Usuario usuario,
 			@PathVariable long id) {
 		try {
-			produto.setId(id);
-			produtoService.update(produto);
+			usuario.setId(id);
+			usuarioService.update(usuario);
 			return ResponseEntity.ok().build();
 		} catch (ResourceNotFoundException ex) {
 			logger.error(ex.getMessage());
@@ -117,11 +119,11 @@ public class ProdutoController {
 		
 	}
 	
-	@Operation(summary = "Deletar Produto", description = "Deletar Produto com o ID informado", tags = {"produto"})
-	@DeleteMapping(path = "/produto/{id}")
-	public ResponseEntity<Void> deleteProdutoById(@PathVariable long id) {
+	@Operation(summary = "Deletar usuario", description = "Deletar usuario com o ID informado", tags = {"usuario"})
+	@DeleteMapping(path = "/usuario/{id}")
+	public ResponseEntity<Void> deleteUsuarioById(@PathVariable long id) {
 		try {
-			produtoService.deleteById(id);
+			usuarioService.deleteById(id);
 			return ResponseEntity.ok().build();
 		} catch (ResourceNotFoundException ex) {
 			logger.error(ex.getMessage());

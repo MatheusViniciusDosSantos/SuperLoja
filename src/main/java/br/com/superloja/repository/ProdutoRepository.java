@@ -12,5 +12,13 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 	Page<Produto> findByDescricao(String descricao, Pageable page);
 	
 	//Page<Produto> findAll(Pageable page);
+	
+	@Query(value = "select p from Produto p where p.marca.descricao like %?1%")
+	Page<Produto> findByMarca(String descricao, Pageable page);
+	
+	@Query(value = "select p from Produto p where p.categoria.descricao like %?1%")
+	Page<Produto> findByCategoria(String descricao, Pageable page);
+
+
 }
 

@@ -24,10 +24,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import br.com.superloja.domain.Categoria;
 import br.com.superloja.domain.Produto;
 import br.com.superloja.exception.BadResourceException;
 import br.com.superloja.exception.ResourceAlreadyExistsException;
 import br.com.superloja.exception.ResourceNotFoundException;
+import br.com.superloja.service.CategoriaService;
 import br.com.superloja.service.ProdutoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,42 +42,42 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @RestController
 @RequestMapping("/api")
-@Tag(name = "produto", description = "API de Produtos")
-public class ProdutoController {
+@Tag(name = "categoria", description = "API de categorias")
+public class CategoriaController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final int ROW_PER_PAGE = 5;
 	
 	@Autowired
-	private ProdutoService produtoService;
+	private CategoriaService categoriaService;
 	
-	@Operation(summary = "Busca produtos", description = "Buscar todos os Produtos, buscar produtos por descrição", tags = {"produto"})
-	@GetMapping(value = "/produto", consumes = 
+	@Operation(summary = "Busca categorias", description = "Buscar todas as categorias, buscar categorias por descrição", tags = {"categoria"})
+	@GetMapping(value = "/categoria", consumes = 
 			MediaType.APPLICATION_JSON_VALUE, produces = 
 				MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Page<Produto>> findAll(
+	public ResponseEntity<Page<Categoria>> findAll(
 			@Parameter(description = "Descrição para pesquisa", allowEmptyValue = true)
 			@RequestBody(required=false) String descricao,
 			@Parameter(description = "Paginação", example = "{\"page\":0,\"size\":1}", allowEmptyValue = true)
 			 Pageable pageable)	{
 		if(StringUtils.isEmpty(descricao)) {
-			return ResponseEntity.ok(produtoService.findAll(pageable));
+			return ResponseEntity.ok(categoriaService.findAll(pageable));
 		} else {
-			return ResponseEntity.ok(produtoService.findAllByDescricao(descricao, pageable));
+			return ResponseEntity.ok(categoriaService.findAllByDescricao(descricao, pageable));
 		}
 	}
 	
-	@Operation(summary = "Busca ID", description = "Buscar Produto por ID", tags = {"produto"})
+	@Operation(summary = "Busca ID", description = "Buscar categoria por ID", tags = {"categoria"})
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Sucesso",
-					content = @Content(schema = @Schema(implementation = Produto.class))),
-			@ApiResponse(responseCode = "404", description = "Produto não encontrado")
+					content = @Content(schema = @Schema(implementation = Categoria.class))),
+			@ApiResponse(responseCode = "404", description = "Categoria não encontrada")
 	})
-	@GetMapping(value = "/produto/{id}", produces =
+	@GetMapping(value = "/categoria/{id}", produces =
 			MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Produto> findProdutoById(@PathVariable long id) {
+	public ResponseEntity<Categoria> findCategoriaById(@PathVariable long id) {
 		try {
-			Produto produto = produtoService.findById(id);
-			return ResponseEntity.ok(produto);
+			Categoria categoria = categoriaService.findById(id);
+			return ResponseEntity.ok(categoria);
 		} catch (ResourceNotFoundException ex) {
 			logger.error(ex.getMessage());
 			
@@ -84,12 +86,12 @@ public class ProdutoController {
 	
 	}
 	
-	@Operation(summary = "Adicionar Produto", description = "Adicionar novo produto informado no banco de dados", tags = {"produto"})
-	@PostMapping(value = "/produto")
-	public ResponseEntity<Produto> addProduto(@RequestBody Produto produto) throws URISyntaxException {
+	@Operation(summary = "Adicionar categoria", description = "Adicionar nova categoria informada no banco de dados", tags = {"categoria"})
+	@PostMapping(value = "/categoria")
+	public ResponseEntity<Categoria> addCategoria(@RequestBody Categoria categoria) throws URISyntaxException {
 		try {
-			Produto novoProduto = produtoService.save(produto);
-			return ResponseEntity.created(new URI("/api/produto" + novoProduto.getId())).body(produto);
+			Categoria novaCategoria = categoriaService.save(categoria);
+			return ResponseEntity.created(new URI("/api/categoria" + novaCategoria.getId())).body(categoria);
 		} catch (ResourceAlreadyExistsException ex) {
 			logger.error(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -99,13 +101,13 @@ public class ProdutoController {
 		}
 	}
 	
-	@Operation(summary = "Alterar Produto", description = "Alterar valores do produto com id selecionado", tags = {"produto"})
-	@PutMapping(value = "/produto/{id}")
-	public ResponseEntity<Produto> updateProduto(@Valid @RequestBody Produto produto,
+	@Operation(summary = "Alterar categoria", description = "Alterar valores da categoria com id selecionado", tags = {"categoria"})
+	@PutMapping(value = "/categoria/{id}")
+	public ResponseEntity<Categoria> updateCategoria(@Valid @RequestBody Categoria categoria,
 			@PathVariable long id) {
 		try {
-			produto.setId(id);
-			produtoService.update(produto);
+			categoria.setId(id);
+			categoriaService.update(categoria);
 			return ResponseEntity.ok().build();
 		} catch (ResourceNotFoundException ex) {
 			logger.error(ex.getMessage());
@@ -117,11 +119,11 @@ public class ProdutoController {
 		
 	}
 	
-	@Operation(summary = "Deletar Produto", description = "Deletar Produto com o ID informado", tags = {"produto"})
-	@DeleteMapping(path = "/produto/{id}")
-	public ResponseEntity<Void> deleteProdutoById(@PathVariable long id) {
+	@Operation(summary = "Deletar categoria", description = "Deletar categoria com o ID informado", tags = {"categoria"})
+	@DeleteMapping(path = "/categoria/{id}")
+	public ResponseEntity<Void> deleteCategoriaById(@PathVariable long id) {
 		try {
-			produtoService.deleteById(id);
+			categoriaService.deleteById(id);
 			return ResponseEntity.ok().build();
 		} catch (ResourceNotFoundException ex) {
 			logger.error(ex.getMessage());

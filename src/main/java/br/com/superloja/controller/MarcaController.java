@@ -24,10 +24,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import br.com.superloja.domain.Marca;
 import br.com.superloja.domain.Produto;
 import br.com.superloja.exception.BadResourceException;
 import br.com.superloja.exception.ResourceAlreadyExistsException;
 import br.com.superloja.exception.ResourceNotFoundException;
+import br.com.superloja.service.MarcaService;
 import br.com.superloja.service.ProdutoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,42 +42,42 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @RestController
 @RequestMapping("/api")
-@Tag(name = "produto", description = "API de Produtos")
-public class ProdutoController {
+@Tag(name = "marca", description = "API de marcas")
+public class MarcaController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final int ROW_PER_PAGE = 5;
 	
 	@Autowired
-	private ProdutoService produtoService;
+	private MarcaService marcaService;
 	
-	@Operation(summary = "Busca produtos", description = "Buscar todos os Produtos, buscar produtos por descrição", tags = {"produto"})
-	@GetMapping(value = "/produto", consumes = 
+	@Operation(summary = "Busca marcas", description = "Buscar todas as marcas, buscar marcas por descrição", tags = {"marca"})
+	@GetMapping(value = "/marca", consumes = 
 			MediaType.APPLICATION_JSON_VALUE, produces = 
 				MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Page<Produto>> findAll(
+	public ResponseEntity<Page<Marca>> findAll(
 			@Parameter(description = "Descrição para pesquisa", allowEmptyValue = true)
 			@RequestBody(required=false) String descricao,
 			@Parameter(description = "Paginação", example = "{\"page\":0,\"size\":1}", allowEmptyValue = true)
 			 Pageable pageable)	{
 		if(StringUtils.isEmpty(descricao)) {
-			return ResponseEntity.ok(produtoService.findAll(pageable));
+			return ResponseEntity.ok(marcaService.findAll(pageable));
 		} else {
-			return ResponseEntity.ok(produtoService.findAllByDescricao(descricao, pageable));
+			return ResponseEntity.ok(marcaService.findAllByDescricao(descricao, pageable));
 		}
 	}
 	
-	@Operation(summary = "Busca ID", description = "Buscar Produto por ID", tags = {"produto"})
+	@Operation(summary = "Busca ID", description = "Buscar marca por ID", tags = {"marca"})
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Sucesso",
-					content = @Content(schema = @Schema(implementation = Produto.class))),
-			@ApiResponse(responseCode = "404", description = "Produto não encontrado")
+					content = @Content(schema = @Schema(implementation = Marca.class))),
+			@ApiResponse(responseCode = "404", description = "Marca não encontrada")
 	})
-	@GetMapping(value = "/produto/{id}", produces =
+	@GetMapping(value = "/marca/{id}", produces =
 			MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Produto> findProdutoById(@PathVariable long id) {
+	public ResponseEntity<Marca> findMarcaById(@PathVariable long id) {
 		try {
-			Produto produto = produtoService.findById(id);
-			return ResponseEntity.ok(produto);
+			Marca marca = marcaService.findById(id);
+			return ResponseEntity.ok(marca);
 		} catch (ResourceNotFoundException ex) {
 			logger.error(ex.getMessage());
 			
@@ -84,12 +86,12 @@ public class ProdutoController {
 	
 	}
 	
-	@Operation(summary = "Adicionar Produto", description = "Adicionar novo produto informado no banco de dados", tags = {"produto"})
-	@PostMapping(value = "/produto")
-	public ResponseEntity<Produto> addProduto(@RequestBody Produto produto) throws URISyntaxException {
+	@Operation(summary = "Adicionar marca", description = "Adicionar nova marca informada no banco de dados", tags = {"marca"})
+	@PostMapping(value = "/marca")
+	public ResponseEntity<Marca> addMarca(@RequestBody Marca marca) throws URISyntaxException {
 		try {
-			Produto novoProduto = produtoService.save(produto);
-			return ResponseEntity.created(new URI("/api/produto" + novoProduto.getId())).body(produto);
+			Marca novaMarca = marcaService.save(marca);
+			return ResponseEntity.created(new URI("/api/marca" + novaMarca.getId())).body(marca);
 		} catch (ResourceAlreadyExistsException ex) {
 			logger.error(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -99,13 +101,13 @@ public class ProdutoController {
 		}
 	}
 	
-	@Operation(summary = "Alterar Produto", description = "Alterar valores do produto com id selecionado", tags = {"produto"})
-	@PutMapping(value = "/produto/{id}")
-	public ResponseEntity<Produto> updateProduto(@Valid @RequestBody Produto produto,
+	@Operation(summary = "Alterar marca", description = "Alterar valores da marca com id selecionado", tags = {"marca"})
+	@PutMapping(value = "/marca/{id}")
+	public ResponseEntity<Marca> updateMarca(@Valid @RequestBody Marca marca,
 			@PathVariable long id) {
 		try {
-			produto.setId(id);
-			produtoService.update(produto);
+			marca.setId(id);
+			marcaService.update(marca);
 			return ResponseEntity.ok().build();
 		} catch (ResourceNotFoundException ex) {
 			logger.error(ex.getMessage());
@@ -117,11 +119,11 @@ public class ProdutoController {
 		
 	}
 	
-	@Operation(summary = "Deletar Produto", description = "Deletar Produto com o ID informado", tags = {"produto"})
-	@DeleteMapping(path = "/produto/{id}")
-	public ResponseEntity<Void> deleteProdutoById(@PathVariable long id) {
+	@Operation(summary = "Deletar marca", description = "Deletar marca com o ID informado", tags = {"marca"})
+	@DeleteMapping(path = "/marca/{id}")
+	public ResponseEntity<Void> deleteMarcaById(@PathVariable long id) {
 		try {
-			produtoService.deleteById(id);
+			marcaService.deleteById(id);
 			return ResponseEntity.ok().build();
 		} catch (ResourceNotFoundException ex) {
 			logger.error(ex.getMessage());
