@@ -26,6 +26,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import br.com.superloja.domain.Produto;
 import br.com.superloja.domain.Usuario;
+import br.com.superloja.dto.UsuarioDTO;
 import br.com.superloja.exception.BadResourceException;
 import br.com.superloja.exception.ResourceAlreadyExistsException;
 import br.com.superloja.exception.ResourceNotFoundException;
@@ -54,15 +55,15 @@ public class UsuarioController {
 	@GetMapping(value = "/usuario", consumes = 
 			MediaType.APPLICATION_JSON_VALUE, produces = 
 				MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Page<Usuario>> findAll(
+	public ResponseEntity<Page<UsuarioDTO>> findAll(
 			@Parameter(description = "Descrição para pesquisa", allowEmptyValue = true)
 			@RequestBody(required=false) String nome,
 			@Parameter(description = "Paginação", example = "{\"page\":0,\"size\":1}", allowEmptyValue = true)
 			 Pageable pageable)	{
 		if(StringUtils.isEmpty(nome)) {
-			return ResponseEntity.ok(usuarioService.findAll(pageable));
+			return ResponseEntity.ok(new UsuarioDTO().converterListaUsuarioDTO(usuarioService.findAll(pageable)));
 		} else {
-			return ResponseEntity.ok(usuarioService.findAllByNome(nome, pageable));
+			return ResponseEntity.ok(new UsuarioDTO().converterListaUsuarioDTO(usuarioService.findAllByNome(nome, pageable)));
 		}
 	}
 	
@@ -88,10 +89,11 @@ public class UsuarioController {
 	
 	@Operation(summary = "Adicionar usuario", description = "Adicionar novo usuario informado no banco de dados", tags = {"usuario"})
 	@PostMapping(value = "/usuario")
-	public ResponseEntity<Usuario> addUsuario(@RequestBody Usuario usuario) throws URISyntaxException {
+	public ResponseEntity<UsuarioDTO> addUsuario(@RequestBody Usuario usuario) throws URISyntaxException {
 		try {
 			Usuario novoUsuario = usuarioService.save(usuario);
-			return ResponseEntity.created(new URI("/api/usuario" + novoUsuario.getId())).body(usuario);
+			
+			return ResponseEntity.created(new URI("/api/usuario" + novoUsuario.getId())).body(new UsuarioDTO().converter(usuario));
 		} catch (ResourceAlreadyExistsException ex) {
 			logger.error(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
