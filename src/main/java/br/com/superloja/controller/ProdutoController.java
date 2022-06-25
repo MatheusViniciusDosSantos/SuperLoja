@@ -84,6 +84,40 @@ public class ProdutoController {
 	
 	}
 	
+	@Operation(summary = "Busca produtos por marca", description = "Buscar produtos por Marca", tags = {"produto"})
+	@GetMapping(value = "/produto/{marca}", consumes = 
+			MediaType.APPLICATION_JSON_VALUE, produces = 
+				MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Page<Produto>> findAllByMarca(
+			@Parameter(description = "Descrição da marca para pesquisa", allowEmptyValue = true)
+			@RequestBody(required=false) String marca,
+			@Parameter(description = "Paginação", example = "{\"page\":0,\"size\":1}", allowEmptyValue = true)
+			 Pageable pageable)	{
+		
+		if(!StringUtils.isEmpty(marca)) {
+			return ResponseEntity.ok(produtoService.findAllByMarca(marca, pageable));
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+		
+		@Operation(summary = "Busca produtos", description = "Buscar produtos por categoria", tags = {"produto"})
+		@GetMapping(value = "/produto/{categoria}", consumes = 
+				MediaType.APPLICATION_JSON_VALUE, produces = 
+					MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<Page<Produto>> findAllByCategoria(
+				@Parameter(description = "Descrição da categoria para pesquisa", allowEmptyValue = true)
+				@RequestBody(required=false) String categoria,
+				@Parameter(description = "Paginação", example = "{\"page\":0,\"size\":1}", allowEmptyValue = true)
+				 Pageable pageable)	{
+			if(!StringUtils.isEmpty(categoria)) {
+				return ResponseEntity.ok(produtoService.findAllByCategoria(categoria, pageable));
+			} else {
+				return ResponseEntity.notFound().build();
+			}
+		}
+	
+	
 	@Operation(summary = "Adicionar Produto", description = "Adicionar novo produto informado no banco de dados", tags = {"produto"})
 	@PostMapping(value = "/produto")
 	public ResponseEntity<Produto> addProduto(@RequestBody Produto produto) throws URISyntaxException {

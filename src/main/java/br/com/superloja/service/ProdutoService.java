@@ -42,6 +42,18 @@ public class ProdutoService {
 		return produtos;
 	}
 	
+	public Page<Produto> findAllByMarca(String marca, Pageable page) {
+		Page<Produto> produtos = produtoRepository.findByMarca(marca, page);
+		
+		return produtos;
+	}
+	
+	public Page<Produto> findAllByCategoria(String categoria, Pageable page) {
+		Page<Produto> produtos = produtoRepository.findByCategoria(categoria, page);
+		
+		return produtos;
+	}
+	
 	public Produto save(Produto produto) throws BadResourceException, ResourceAlreadyExistsException {
 		if(!StringUtils.isEmpty(produto.getDescricao())) {
 			if(existsById(produto.getId())) {

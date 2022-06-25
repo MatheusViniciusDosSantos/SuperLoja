@@ -24,61 +24,57 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import br.com.superloja.domain.Produto;
-import br.com.superloja.domain.Usuario;
-import br.com.superloja.dto.UsuarioDTO;
+import br.com.superloja.domain.Permissao;
 import br.com.superloja.exception.BadResourceException;
 import br.com.superloja.exception.ResourceAlreadyExistsException;
 import br.com.superloja.exception.ResourceNotFoundException;
-import br.com.superloja.service.ProdutoService;
-import br.com.superloja.service.UsuarioService;
+import br.com.superloja.service.PermissaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
-
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api")
-@Tag(name = "usuario", description = "API de Usuario")
-public class UsuarioController {
+@Tag(name = "permissao", description = "API de permissoes")
+public class PermissaoController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final int ROW_PER_PAGE = 5;
 	
 	@Autowired
-	private UsuarioService usuarioService;
+	private PermissaoService permissaoService;
 	
-	@Operation(summary = "Busca usuarios", description = "Buscar todos os usuarios, buscar usuarios por nome", tags = {"usuario"})
-	@GetMapping(value = "/usuario", consumes = 
+	@Operation(summary = "Busca permissoes", description = "Buscar todas as permissoes, buscar permissoes por descrição", tags = {"permissao"})
+	@GetMapping(value = "/permissao", consumes = 
 			MediaType.APPLICATION_JSON_VALUE, produces = 
 				MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Page<UsuarioDTO>> findAll(
+	public ResponseEntity<Page<Permissao>> findAll(
 			@Parameter(description = "Descrição para pesquisa", allowEmptyValue = true)
-			@RequestBody(required=false) String nome,
+			@RequestBody(required=false) String descricao,
 			@Parameter(description = "Paginação", example = "{\"page\":0,\"size\":1}", allowEmptyValue = true)
 			 Pageable pageable)	{
-		if(StringUtils.isEmpty(nome)) {
-			return ResponseEntity.ok(usuarioService.findAll(pageable));
+		if(StringUtils.isEmpty(descricao)) {
+			return ResponseEntity.ok(permissaoService.findAll(pageable));
 		} else {
-			return ResponseEntity.ok(usuarioService.findAllByNome(nome, pageable));
+			return ResponseEntity.ok(permissaoService.findAllByDescricao(descricao, pageable));
 		}
 	}
 	
-	@Operation(summary = "Busca ID", description = "Buscar usuario por ID", tags = {"usuario"})
+	@Operation(summary = "Busca ID", description = "Buscar permissao por ID", tags = {"permissao"})
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Sucesso",
-					content = @Content(schema = @Schema(implementation = Usuario.class))),
-			@ApiResponse(responseCode = "404", description = "Usuario não encontrado")
+					content = @Content(schema = @Schema(implementation = Permissao.class))),
+			@ApiResponse(responseCode = "404", description = "Permissao não encontrada")
 	})
-	@GetMapping(value = "/usuario/{id}", produces =
+	@GetMapping(value = "/permissao/{id}", produces =
 			MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Usuario> findUsuarioById(@PathVariable long id) {
+	public ResponseEntity<Permissao> findPermissaoById(@PathVariable long id) {
 		try {
-			Usuario usuario = usuarioService.findById(id);
-			return ResponseEntity.ok(usuario);
+			Permissao permissao = permissaoService.findById(id);
+			return ResponseEntity.ok(permissao);
 		} catch (ResourceNotFoundException ex) {
 			logger.error(ex.getMessage());
 			
@@ -87,13 +83,12 @@ public class UsuarioController {
 	
 	}
 	
-	@Operation(summary = "Adicionar usuario", description = "Adicionar novo usuario informado no banco de dados", tags = {"usuario"})
-	@PostMapping(value = "/usuario")
-	public ResponseEntity<UsuarioDTO> addUsuario(@RequestBody Usuario usuario) throws URISyntaxException {
+	@Operation(summary = "Adicionar permissao", description = "Adicionar nova permissao informada no banco de dados", tags = {"permissao"})
+	@PostMapping(value = "/permissao")
+	public ResponseEntity<Permissao> addPermissao(@RequestBody Permissao permissao) throws URISyntaxException {
 		try {
-			Usuario novoUsuario = usuarioService.save(usuario);
-			
-			return ResponseEntity.created(new URI("/api/usuario" + novoUsuario.getId())).body(new UsuarioDTO().converter(usuario));
+			Permissao novaPermissao = permissaoService.save(permissao);
+			return ResponseEntity.created(new URI("/api/permissao" + novaPermissao.getId())).body(permissao);
 		} catch (ResourceAlreadyExistsException ex) {
 			logger.error(ex.getMessage());
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -103,13 +98,13 @@ public class UsuarioController {
 		}
 	}
 	
-	@Operation(summary = "Alterar Usuario", description = "Alterar valores do usuario com id selecionado", tags = {"usuario"})
-	@PutMapping(value = "/usuario/{id}")
-	public ResponseEntity<Usuario> updateUsuario(@Valid @RequestBody Usuario usuario,
+	@Operation(summary = "Alterar permissao", description = "Alterar valores da permissao com id selecionado", tags = {"permissao"})
+	@PutMapping(value = "/permissao/{id}")
+	public ResponseEntity<Permissao> updatePermissao(@Valid @RequestBody Permissao permissao,
 			@PathVariable long id) {
 		try {
-			usuario.setId(id);
-			usuarioService.update(usuario);
+			permissao.setId(id);
+			permissaoService.update(permissao);
 			return ResponseEntity.ok().build();
 		} catch (ResourceNotFoundException ex) {
 			logger.error(ex.getMessage());
@@ -121,11 +116,11 @@ public class UsuarioController {
 		
 	}
 	
-	@Operation(summary = "Deletar usuario", description = "Deletar usuario com o ID informado", tags = {"usuario"})
-	@DeleteMapping(path = "/usuario/{id}")
-	public ResponseEntity<Void> deleteUsuarioById(@PathVariable long id) {
+	@Operation(summary = "Deletar permissao", description = "Deletar permissao com o ID informado", tags = {"permissao"})
+	@DeleteMapping(path = "/permissao/{id}")
+	public ResponseEntity<Void> deletePermissaoById(@PathVariable long id) {
 		try {
-			usuarioService.deleteById(id);
+			permissaoService.deleteById(id);
 			return ResponseEntity.ok().build();
 		} catch (ResourceNotFoundException ex) {
 			logger.error(ex.getMessage());
@@ -133,17 +128,5 @@ public class UsuarioController {
 					HttpStatus.NOT_FOUND, ex.getMessage(), ex);
 		}
 	}
-	
-//	@Operation(summary = "Adicionar imagem de usuário", description = "Adicionar imagem do usuário informado", tags = {"usuario"})
-//	public ResponseEntity<Void> addImageToUsuario(@PathVariable String imagemBase64, Usuario usuario) {
-//		try {
-//			usuarioService.deleteById(id);
-//			return ResponseEntity.ok().build();
-//		} catch (ResourceNotFoundException ex) {
-//			logger.error(ex.getMessage());
-//			throw new ResponseStatusException(
-//					HttpStatus.NOT_FOUND, ex.getMessage(), ex);
-//		}
-//	}
 
 }

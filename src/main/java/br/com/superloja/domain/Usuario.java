@@ -9,20 +9,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Table(name = "usuario")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Getter
-@Setter
+@Data
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -47,6 +49,10 @@ public class Usuario implements Serializable {
 	@Schema(description = "Status do usuário", example = "A")
 	private char status;
 	
+	@Schema(description = "Imagem do usuário em base64")
+	private String imagemBase64;
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Schema(description = "Data de Cadastro do usuário. Gerado na criação de um novo usuário")
 	private Date dataCadastro;
 	
@@ -54,55 +60,4 @@ public class Usuario implements Serializable {
 		dataCadastro = Calendar.getInstance().getTime();
 	}
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-	
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-	
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	public String getSenha() {
-		return nome;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-	
-	public char getStatus() {
-		return status;
-	}
-
-	public void setStatus(char status) {
-		this.status = status;
-	}
-	
-	public Date getDataCadastro() {
-		return dataCadastro;
-	}
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import br.com.superloja.domain.Usuario;
+import br.com.superloja.dto.UsuarioDTO;
 import br.com.superloja.exception.BadResourceException;
 import br.com.superloja.exception.ResourceAlreadyExistsException;
 import br.com.superloja.exception.ResourceNotFoundException;
@@ -33,19 +34,21 @@ public class UsuarioService {
 		}
 	}
 	
-	public Page<Usuario> findAll(Pageable pageable) {
-		return usuarioRepository.findAll(pageable);
+	public Page<UsuarioDTO> findAll(Pageable pageable) {
+		
+		return new UsuarioDTO().converterListaUsuarioDTO(usuarioRepository.findAll(pageable)) ;
 	}
 	
-	public Page<Usuario> findAllByNome(String descricao, Pageable page) {
+	public Page<UsuarioDTO> findAllByNome(String descricao, Pageable page) {
 		Page<Usuario> usuarios = usuarioRepository.findByNome(descricao, page);
 		
-		return usuarios;
+		
+		return new UsuarioDTO().converterListaUsuarioDTO(usuarios);
 	}
 	
 	public Usuario save(Usuario usuario) throws BadResourceException, ResourceAlreadyExistsException {
 		if(!StringUtils.isEmpty(usuario.getNome())) {
-//			usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
+			usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
 			if(existsById(usuario.getId())) {
 				throw new ResourceAlreadyExistsException("Usuario com id: " + usuario.getId() + " já existe.");
 			}

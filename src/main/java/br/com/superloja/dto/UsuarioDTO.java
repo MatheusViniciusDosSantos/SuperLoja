@@ -10,14 +10,16 @@ import lombok.Data;
 
 @Data
 public class UsuarioDTO {
+	private long id;
 	private String nome;
 	private String cpf;
 	private String email;
 	private Date dataCadastro;
 	
 	public UsuarioDTO converter(Usuario usuario) {
-		BeanUtils.copyProperties(usuario, this);
-		return this;
+		UsuarioDTO usuarioDTO = new UsuarioDTO();
+		BeanUtils.copyProperties(usuario, usuarioDTO);
+		return usuarioDTO;
 	}
 	
 	public Page<UsuarioDTO> converterListaUsuarioDTO(Page<Usuario> pageUsuario) {
