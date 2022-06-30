@@ -1,5 +1,7 @@
 package br.com.superloja.service;
 
+import java.util.Calendar;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,6 +49,7 @@ public class PermissaoService {
 			if(existsById(permissao.getId())) {
 				throw new ResourceAlreadyExistsException("Permissao com id: " + permissao.getId() + " já existe.");
 			}
+			permissao.setDataCadastro(Calendar.getInstance().getTime());
 			return permissaoRepository.save(permissao);
 		} else {
 			BadResourceException exe = new BadResourceException("Erro ao salvar aluno");
@@ -62,6 +65,7 @@ public class PermissaoService {
 			if (!existsById(permissao.getId())) {
 				throw new ResourceNotFoundException("Permissao não encontrado com o id: " + permissao.getId());
 			}
+			permissao.setDataUltimaAlteracao(Calendar.getInstance().getTime());
 			permissaoRepository.save(permissao);
 		} else {
 			BadResourceException exe = new BadResourceException("Erro ao salvar aluno");

@@ -1,10 +1,14 @@
 package br.com.superloja.domain;
 
+import java.util.Date;
+
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.Cache;
@@ -30,6 +34,14 @@ public class PermissaoUsuario {
 	@JoinColumn(name = "idPermissao")
 	@NotBlank
 	private Permissao permissao;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Schema(description = "Data de Cadastro do usuário. Gerado na criação de um novo usuário")
+	private Date dataCadastro;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Schema(description = "Data de Atualização do usuário. Gerado na alteração de um usuário")
+	private Date dataUltimaAlteracao;
 	
 	
 }

@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.Cache;
@@ -61,6 +63,10 @@ public class Produto implements Serializable {
 	
 	@Schema(description = "Data de Cadastro dos produtos. Gerado na criação de um novo produto")
 	private Date dataCadastro;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Schema(description = "Data de Atualização do usuário. Gerado na alteração de um usuário")
+	private Date dataUltimaAlteracao;
 	
 	public Produto() {
 		dataCadastro = Calendar.getInstance().getTime();

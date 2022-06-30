@@ -56,6 +56,10 @@ public class Usuario implements Serializable {
 	@Schema(description = "Data de Cadastro do usuário. Gerado na criação de um novo usuário")
 	private Date dataCadastro;
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Schema(description = "Data de Atualização do usuário. Gerado na alteração de um usuário")
+	private Date dataUltimaAlteracao;
+	
 	public Usuario() {
 		dataCadastro = Calendar.getInstance().getTime();
 	}

@@ -1,5 +1,7 @@
 package br.com.superloja.service;
 
+import java.util.Calendar;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,6 +54,7 @@ public class UsuarioService {
 			if(existsById(usuario.getId())) {
 				throw new ResourceAlreadyExistsException("Usuario com id: " + usuario.getId() + " já existe.");
 			}
+			usuario.setDataCadastro(Calendar.getInstance().getTime());
 			return usuarioRepository.save(usuario);
 		} else {
 			BadResourceException exe = new BadResourceException("Erro ao salvar aluno");
@@ -67,6 +70,7 @@ public class UsuarioService {
 			if (!existsById(usuario.getId())) {
 				throw new ResourceNotFoundException("Usuario não encontrado com o id: " + usuario.getId());
 			}
+			usuario.setDataUltimaAlteracao(Calendar.getInstance().getTime());
 			usuarioRepository.save(usuario);
 		} else {
 			BadResourceException exe = new BadResourceException("Erro ao salvar aluno");
