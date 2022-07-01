@@ -4,6 +4,9 @@ import java.util.Date;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -20,8 +23,13 @@ import lombok.Data;
 @Embeddable
 @Table(name = "permissaoUsuario")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Entity
 @Data
 public class PermissaoUsuario {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private long id;
 	
 	@ManyToOne
 	@Schema(description = "Usuário usado na associação", example = "{ \"id\" : 1, \"nome\" : \"José\"}")

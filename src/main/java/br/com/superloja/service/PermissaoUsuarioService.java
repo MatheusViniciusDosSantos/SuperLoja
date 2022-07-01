@@ -1,5 +1,6 @@
 package br.com.superloja.service;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,7 @@ public class PermissaoUsuarioService {
 	private PermissaoUsuarioRepository permissaoUsuarioRepository;
 	
 	public Page<PermissaoUsuario> findByUsuarioId(Long id, Pageable page) throws ResourceNotFoundException {
-		Page<PermissaoUsuario> permissaoUsuario = permissaoUsuarioRepository.findByUsuarioId(id, page);
+		Page<PermissaoUsuario> permissaoUsuario = null; //permissaoUsuarioRepository.findByUsuarioId(id, page);
 		
 		if(permissaoUsuario == null) {
 			throw new ResourceNotFoundException("Permissões do usuario não encontradas com o id do usuario: " + id);

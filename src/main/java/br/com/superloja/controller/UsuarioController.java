@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import br.com.superloja.domain.Endereco;
 import br.com.superloja.domain.Produto;
 import br.com.superloja.domain.Usuario;
 import br.com.superloja.dto.UsuarioDTO;

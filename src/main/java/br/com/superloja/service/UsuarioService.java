@@ -8,7 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 
+import br.com.superloja.domain.Endereco;
 import br.com.superloja.domain.Usuario;
 import br.com.superloja.dto.UsuarioDTO;
 import br.com.superloja.exception.BadResourceException;
@@ -89,4 +91,5 @@ public class UsuarioService {
 	}  public Long count() {
 		return usuarioRepository.count();
 	}
+	
 }
