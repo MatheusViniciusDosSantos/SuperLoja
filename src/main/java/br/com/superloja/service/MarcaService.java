@@ -49,6 +49,7 @@ public class MarcaService {
 			if(existsById(marca.getId())) {
 				throw new ResourceAlreadyExistsException("Marca com id: " + marca.getId() + " já existe.");
 			}
+			marca.setStatus('A');
 			marca.setDataCadastro(Calendar.getInstance().getTime());
 			return marcaRepository.save(marca);
 		} else {

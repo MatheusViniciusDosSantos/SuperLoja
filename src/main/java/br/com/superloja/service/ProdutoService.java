@@ -8,10 +8,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import br.com.superloja.domain.HistoricoValorProduto;
 import br.com.superloja.domain.Produto;
 import br.com.superloja.exception.BadResourceException;
 import br.com.superloja.exception.ResourceAlreadyExistsException;
 import br.com.superloja.exception.ResourceNotFoundException;
+import br.com.superloja.repository.HistoricoValorProdutoRepository;
 import br.com.superloja.repository.ProdutoRepository;
 
 @Service
@@ -61,10 +63,16 @@ public class ProdutoService {
 			if(existsById(produto.getId())) {
 				throw new ResourceAlreadyExistsException("Produto com id: " + produto.getId() + " já existe.");
 			}
+
+			produto.setStatus('A');
 			produto.setDataCadastro(Calendar.getInstance().getTime());
-			return produtoRepository.save(produto);
+			Produto novoProduto = produtoRepository.save(produto);
+			HistoricoValorProdutoService historicoValorProdutoService = new HistoricoValorProdutoService();
+			historicoValorProdutoService.salvarHistoricoProduto(novoProduto);
+		
+			return novoProduto;
 		} else {
-			BadResourceException exe = new BadResourceException("Erro ao salvar aluno");
+			BadResourceException exe = new BadResourceException("Erro ao salvar produto");
 			exe.addErrorMessage("Produto esta vazio ou nulo");
 			throw exe;
 		}
@@ -79,8 +87,10 @@ public class ProdutoService {
 			}
 			produto.setDataUltimaAlteracao(Calendar.getInstance().getTime());
 			produtoRepository.save(produto);
+			HistoricoValorProdutoService historicoValorProdutoService = new HistoricoValorProdutoService();
+			historicoValorProdutoService.salvarHistoricoProduto(produto);
 		} else {
-			BadResourceException exe = new BadResourceException("Erro ao salvar aluno");
+			BadResourceException exe = new BadResourceException("Erro ao salvar produto");
 			exe.addErrorMessage("Produto esta vazio ou nulo");
 			throw exe;
 		}

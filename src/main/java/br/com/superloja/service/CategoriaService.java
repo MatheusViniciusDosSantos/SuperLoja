@@ -49,6 +49,7 @@ public class CategoriaService {
 			if(existsById(categoria.getId())) {
 				throw new ResourceAlreadyExistsException("Categoria com id: " + categoria.getId() + " já existe.");
 			}
+			categoria.setStatus('A');
 			categoria.setDataCadastro(Calendar.getInstance().getTime());
 			return categoriaRepository.save(categoria);
 		} else {

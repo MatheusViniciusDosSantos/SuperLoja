@@ -1,6 +1,7 @@
 package br.com.superloja.service;
 
 import java.util.Calendar;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,11 +12,15 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.superloja.domain.Endereco;
+import br.com.superloja.domain.Permissao;
+import br.com.superloja.domain.PermissaoUsuario;
 import br.com.superloja.domain.Usuario;
 import br.com.superloja.dto.UsuarioDTO;
 import br.com.superloja.exception.BadResourceException;
 import br.com.superloja.exception.ResourceAlreadyExistsException;
 import br.com.superloja.exception.ResourceNotFoundException;
+import br.com.superloja.repository.PermissaoRepository;
+import br.com.superloja.repository.PermissaoUsuarioRepository;
 import br.com.superloja.repository.UsuarioRepository;
 
 @Service
@@ -23,6 +28,12 @@ public class UsuarioService {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private PermissaoRepository permissaoRepository;
+	
+	@Autowired
+	private PermissaoUsuarioRepository permissaoUsuarioRepository;
 	
 	private boolean existsById(Long id) {
 		return usuarioRepository.existsById(id);
@@ -56,8 +67,18 @@ public class UsuarioService {
 			if(existsById(usuario.getId())) {
 				throw new ResourceAlreadyExistsException("Usuario com id: " + usuario.getId() + " já existe.");
 			}
+			List<Permissao> permissoes = permissaoRepository.buscarPermissaoNome("funcionario");
+			usuario.setStatus('A');
 			usuario.setDataCadastro(Calendar.getInstance().getTime());
-			return usuarioRepository.save(usuario);
+			Usuario usuarioNovo = usuarioRepository.save(usuario);
+			if (permissoes.size() > 0) {
+				PermissaoUsuario permissaoUsuario = new PermissaoUsuario();
+				permissaoUsuario.setPermissao(permissoes.get(0));
+				permissaoUsuario.setUsuario(usuarioNovo);
+				permissaoUsuarioRepository.save(permissaoUsuario);
+			}
+			
+			return usuarioNovo;
 		} else {
 			BadResourceException exe = new BadResourceException("Erro ao salvar aluno");
 			exe.addErrorMessage("Usuario esta vazio ou nulo");

@@ -49,6 +49,7 @@ public class FornecedorService {
 			if(existsById(fornecedor.getId())) {
 				throw new ResourceAlreadyExistsException("Fornecedor com id: " + fornecedor.getId() + " já existe.");
 			}
+			fornecedor.setStatus('A');
 			fornecedor.setDataCadastro(Calendar.getInstance().getTime());
 			return fornecedorRepository.save(fornecedor);
 		} else {
