@@ -44,6 +44,12 @@ public class PermissaoUsuarioController {
             return ResponseEntity.ok(permissaoUsuario);        
     }
     
+    @GetMapping(value = "/permissaoUsuario/usuario/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PermissaoUsuario> findByUsuarioId(@PathVariable long idUsuario) {    	
+        	PermissaoUsuario permissaoUsuario = permissaoUsuarioService.findById(idUsuario);
+            return ResponseEntity.ok(permissaoUsuario);
+    }
+    
     @PostMapping(value = "/permissaoUsuario")
     public ResponseEntity<PermissaoUsuario> add(@RequestBody PermissaoUsuario permissaoUsuario) 
             throws URISyntaxException {        

@@ -14,6 +14,6 @@ public interface HistoricoValorProdutoRepository extends JpaRepository<Historico
 	@Query(value = "select p from HistoricoValorProduto p where p.produto.id like %?1%")
 	Page<HistoricoValorProduto> findByProdutoId(Long id, Pageable page);
 	
-	@Query(value = "select p from HistoricoValorProduto p where p.produto.id like %?1% order by p.dataUltimaAlteracao desc")
-	List<HistoricoValorProduto> findByProdutoIdOrdenadoData(Long id, Pageable page);
+	@Query(value = "select p from HistoricoValorProduto p where p.produto.id=?1 order by p.dataUltimaAlteracao desc")
+	List<HistoricoValorProduto> findByProdutoIdOrdenadoData(Long id);
 }

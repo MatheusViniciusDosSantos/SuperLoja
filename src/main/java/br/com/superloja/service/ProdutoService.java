@@ -1,6 +1,7 @@
 package br.com.superloja.service;
 
 import java.util.Calendar;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,26 @@ public class ProdutoService {
 	
 	private boolean existsById(Long id) {
 		return produtoRepository.existsById(id);
+	}
+	
+	//
+	public void atualizarValorProdutoCategoria(Long idCategoria, Double percentual, String tipoOperacao) throws BadResourceException {
+		List<Produto> produtos = produtoRepository.buscarProdutosCategorias(idCategoria);
+		
+		for (Produto produto:produtos) {
+			if (tipoOperacao == "+") {
+				produto.setValorVenda(produto.getValorVenda() + produto.getValorVenda()*(percentual/100));
+			} else if (tipoOperacao == "-") {
+				produto.setValorVenda(produto.getValorVenda() - produto.getValorVenda()*(percentual/100));
+			}
+			try {
+				update(produto);
+			} catch (BadResourceException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public Produto findById(Long id) throws ResourceNotFoundException {

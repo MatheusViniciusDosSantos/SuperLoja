@@ -116,6 +116,28 @@ public class ProdutoController {
 				return ResponseEntity.notFound().build();
 			}
 		}
+		
+		@Operation(summary = "Busca produtos", description = "Buscar produtos por id da categoria", tags = {"produto"})
+		@GetMapping(value = "/atualizarValorCategoria", consumes = 
+				MediaType.APPLICATION_JSON_VALUE, produces = 
+					MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<Void> atualizarValorProdutoCategoria(
+				@Parameter(description = "Id da categoria para pesquisa", allowEmptyValue = true)
+				@RequestBody(required=false) Long idCategoria,
+				@Parameter(description = "Percentual", example = "10", allowEmptyValue = true)
+				 Double percentual, @Parameter(description = "Tipo da operação", example = "+", allowEmptyValue = true)
+				 String tipoOperacao )	{
+			if(idCategoria != null) {
+				try {
+					produtoService.atualizarValorProdutoCategoria(idCategoria, percentual, tipoOperacao);
+				} catch (BadResourceException e) {
+					e.printStackTrace();
+				}
+				return ResponseEntity.ok().build();
+			} else {
+				return ResponseEntity.notFound().build();
+			}
+		}
 	
 	
 	@Operation(summary = "Adicionar Produto", description = "Adicionar novo produto informado no banco de dados", tags = {"produto"})

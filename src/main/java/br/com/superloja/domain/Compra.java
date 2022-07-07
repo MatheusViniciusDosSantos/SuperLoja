@@ -17,7 +17,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Entity
-@Table(name = "venda")
+@Table(name = "compra")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Data
 public class Compra {

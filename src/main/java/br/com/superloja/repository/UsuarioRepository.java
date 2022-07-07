@@ -13,10 +13,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	
 	//Page<Produto> findAll(Pageable page);
 	
-	@Query(value = "select p from Usuario p where p.cpf like %?1%")
-	Page<Usuario> findByCpf(String cpf, Pageable page);
+	@Query(value = "select p from Usuario p where p.cpf=?1")
+	Usuario findByCpf(String cpf);
 	
-	@Query(value = "select p from Usuario p where p.email like %?1%")
-	Page<Usuario> findByEmail(String email, Pageable page);
+	@Query(value = "select p from Usuario p where p.email=?1")
+	Usuario findByEmail(String email);
 }
 

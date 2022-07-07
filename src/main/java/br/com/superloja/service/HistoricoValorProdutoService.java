@@ -1,6 +1,8 @@
 package br.com.superloja.service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,11 +44,13 @@ public class HistoricoValorProdutoService {
 //		 Query q = session.createQuery("FROM table");
 //		 q.setFirstResult(start);
 //		 q.setMaxResults(maxRows);
-		historicoValorProdutoRepository.findByProdutoIdOrdenadoData(produto);
-		 HistoricoValorProduto historicoValorProduto = new HistoricoValorProduto();
+		 List<HistoricoValorProduto> listaHistorico = new ArrayList<>();
+		 listaHistorico = historicoValorProdutoRepository.findByProdutoIdOrdenadoData(produto.getId());
+		 HistoricoValorProduto historicoValorProduto = listaHistorico.get(0);
 			historicoValorProduto.setProduto(produto);
 			historicoValorProduto.setValorCusto(produto.getValorCusto());
 			historicoValorProduto.setValorVenda(produto.getValorVenda());
+			historicoValorProduto.setDataUltimaAlteracao(Calendar.getInstance().getTime());
 			historicoValorProdutoRepository.save(historicoValorProduto);
 	 }
 }

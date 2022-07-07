@@ -30,7 +30,7 @@ public class ItensCompra {
 	
 	@Schema(description = "Produto")
 	private Produto produto;
-	
-	@Schema(description = "Compra dos produtos")
-	private Compra compra;
+//	
+//	@Schema(description = "Compra dos produtos")
+//	private Compra compra;
 }

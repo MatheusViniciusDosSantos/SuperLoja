@@ -54,8 +54,8 @@ public class PermissaoUsuarioService {
         return permissaoUsuarioRepository.count();
     }
     
-    public Page<PermissaoUsuario> findByUsuarioId(Long id, Pageable page) throws ResourceNotFoundException {
-		Page<PermissaoUsuario> permissaoUsuario = permissaoUsuarioRepository.findByUsuarioId(id, page);
+    public PermissaoUsuario findByUsuarioId(Long id) throws ResourceNotFoundException {
+		PermissaoUsuario permissaoUsuario = permissaoUsuarioRepository.findByUsuarioId(id);
 		
 		if(permissaoUsuario == null) {
 			throw new ResourceNotFoundException("Permissões do usuario não encontradas com o id do usuario: " + id);

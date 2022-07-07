@@ -31,6 +31,6 @@ public class ItensVenda {
 	@Schema(description = "Produto")
 	private Produto produto;
 	
-	@Schema(description = "Venda dos produtos")
-	private Venda venda;
+//	@Schema(description = "Venda dos produtos")
+//	private Venda venda;
 }
