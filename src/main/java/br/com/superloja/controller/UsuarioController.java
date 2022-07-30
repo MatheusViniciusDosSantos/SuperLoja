@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +57,8 @@ public class UsuarioController {
 	@GetMapping(value = "/usuario", consumes = 
 			MediaType.APPLICATION_JSON_VALUE, produces = 
 				MediaType.APPLICATION_JSON_VALUE)
+
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Page<UsuarioDTO>> findAll(
 			@Parameter(description = "Descrição para pesquisa", allowEmptyValue = true)
 			@RequestBody(required=false) String nome,
@@ -76,6 +79,8 @@ public class UsuarioController {
 	})
 	@GetMapping(value = "/usuario/{id}", produces =
 			MediaType.APPLICATION_JSON_VALUE)
+
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Usuario> findUsuarioById(@PathVariable long id) {
 		try {
 			Usuario usuario = usuarioService.findById(id);
@@ -90,6 +95,7 @@ public class UsuarioController {
 	
 	@Operation(summary = "Adicionar usuario", description = "Adicionar novo usuario informado no banco de dados", tags = {"usuario"})
 	@PostMapping(value = "/usuario")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<UsuarioDTO> addUsuario(@RequestBody Usuario usuario) throws URISyntaxException {
 		try {
 			Usuario novoUsuario = usuarioService.save(usuario);
@@ -105,11 +111,10 @@ public class UsuarioController {
 	}
 	
 	@Operation(summary = "Alterar Usuario", description = "Alterar valores do usuario com id selecionado", tags = {"usuario"})
-	@PutMapping(value = "/usuario/{id}")
-	public ResponseEntity<Usuario> updateUsuario(@Valid @RequestBody Usuario usuario,
-			@PathVariable long id) {
+	@PutMapping(value = "/usuario")
+	@CrossOrigin("http://localhost:3000")
+	public ResponseEntity<Usuario> updateUsuario(@Valid @RequestBody Usuario usuario) {
 		try {
-			usuario.setId(id);
 			usuarioService.update(usuario);
 			return ResponseEntity.ok().build();
 		} catch (ResourceNotFoundException ex) {
@@ -124,6 +129,7 @@ public class UsuarioController {
 	
 	@Operation(summary = "Deletar usuario", description = "Deletar usuario com o ID informado", tags = {"usuario"})
 	@DeleteMapping(path = "/usuario/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Void> deleteUsuarioById(@PathVariable long id) {
 		try {
 			usuarioService.deleteById(id);
