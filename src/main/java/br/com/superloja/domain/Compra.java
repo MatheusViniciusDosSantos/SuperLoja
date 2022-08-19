@@ -31,7 +31,14 @@ public class Compra {
 	@Schema(description = "Fornecedor da compra")
 	private Fornecedor fornecedor;
 	
+	@Schema(description = "Status da compra", example = "A")
+	private char status;
+	
 	@Schema(description = "Data e hora da compra")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataCompra;
+	private Date dataCadastro;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Schema(description = "Data de Atualização da compra.")
+	private Date dataUltimaAlteracao;
 }

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -36,6 +38,8 @@ public class Cidade implements Serializable {
 	@NotBlank
 	private String nome;
 	
+	@ManyToOne
+	@JoinColumn(name = "idEstado")
 	@Schema(description = "Estado da cidade")
 	@NotBlank
 	private Estado estado;

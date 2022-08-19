@@ -1,10 +1,16 @@
 package br.com.superloja.domain;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -28,9 +34,24 @@ public class ItensVenda {
 	@Schema(description = "Quantidade de produtos")
 	private int quantidade;
 	
+	@ManyToOne
+	@JoinColumn(name = "idProduto")
 	@Schema(description = "Produto")
 	private Produto produto;
 	
-//	@Schema(description = "Venda dos produtos")
-//	private Venda venda;
+	@ManyToOne
+	@JoinColumn(name = "idVenda")
+	@Schema(description = "Venda dos produtos")
+	private Venda venda;
+	
+	@Schema(description = "Status dos itens da venda", example = "A")
+	private char status;
+	
+	@Schema(description = "Data e hora dos itens da venda")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataCadastro;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Schema(description = "Data de Atualização dos itens da venda.")
+	private Date dataUltimaAlteracao;
 }

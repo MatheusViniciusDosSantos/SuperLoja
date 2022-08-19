@@ -32,7 +32,14 @@ public class Venda {
 	@Schema(description = "Usuario da venda")
 	private Usuario usuario;
 	
+	@Schema(description = "Status da venda", example = "A")
+	private char status;
+	
 	@Schema(description = "Data e hora da venda")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataVenda;
+	private Date dataCadastro;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Schema(description = "Data de Atualização da venda.")
+	private Date dataUltimaAlteracao;
 }
