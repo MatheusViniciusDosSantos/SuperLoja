@@ -61,15 +61,15 @@ public class Produto implements Serializable {
 	@Schema(description = "Status do produto", example = "A")
 	private char status;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Schema(description = "Data de Cadastro dos produtos. Gerado na criação de um novo produto")
 	private Date dataCadastro;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Schema(description = "Data de Atualização do usuário. Gerado na alteração de um usuário")
+	@Schema(description = "Data de Atualização do produto. Gerado na alteração de um produto")
 	private Date dataUltimaAlteracao;
 	
 	public Produto() {
-		dataCadastro = Calendar.getInstance().getTime();
 	}
 
 	public long getId() {

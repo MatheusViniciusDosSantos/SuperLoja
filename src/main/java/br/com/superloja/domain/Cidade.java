@@ -1,7 +1,6 @@
 package br.com.superloja.domain;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -21,11 +20,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "categoria")
+@Table(name = "cidade")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Getter
 @Setter
-public class Categoria implements Serializable {
+public class Cidade implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,49 +32,24 @@ public class Categoria implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
-	@Schema(description = "Descrição/nome da categoria", example = "Laticínios")
+	@Schema(description = "Nome do cidade", example = "São Paulo")
 	@NotBlank
-	private String descricao;
+	private String nome;
 	
-	@Schema(description = "Status da categoria", example = "A")
+	@Schema(description = "Estado da cidade")
+	@NotBlank
+	private Estado estado;
+	
+	@Schema(description = "Status do cidade", example = "A")
 	private char status;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Schema(description = "Data de Cadastro da categoria. Gerado na criação de uma nova categoria")
+	@Schema(description = "Data de Cadastro da cidade. Gerado na criação de uma nova cidade")
 	private Date dataCadastro;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Schema(description = "Data de Atualização da categoria. Gerado na alteração de uma categoria")
+	@Schema(description = "Data de Atualização da cidade. Gerado na alteração de uma cidade")
 	private Date dataUltimaAlteracao;
 	
-	public Categoria() {
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-	
-	public char getStatus() {
-		return status;
-	}
-
-	public void setStatus(char status) {
-		this.status = status;
-	}
-	
-	public Date getDataCadastro() {
-		return dataCadastro;
-	}
+	public Cidade() {}
 }

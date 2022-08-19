@@ -53,7 +53,7 @@ public class MarcaService {
 			marca.setDataCadastro(Calendar.getInstance().getTime());
 			return marcaRepository.save(marca);
 		} else {
-			BadResourceException exe = new BadResourceException("Erro ao salvar aluno");
+			BadResourceException exe = new BadResourceException("Erro ao salvar marca");
 			exe.addErrorMessage("Marca esta vazio ou nulo");
 			throw exe;
 		}
@@ -69,7 +69,7 @@ public class MarcaService {
 			marca.setDataUltimaAlteracao(Calendar.getInstance().getTime());
 			marcaRepository.save(marca);
 		} else {
-			BadResourceException exe = new BadResourceException("Erro ao salvar aluno");
+			BadResourceException exe = new BadResourceException("Erro ao salvar marca");
 			exe.addErrorMessage("Marca esta vazio ou nulo");
 			throw exe;
 		}

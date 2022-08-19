@@ -49,15 +49,15 @@ public class Fornecedor implements Serializable {
 	@Schema(description = "Status do fornecedor", example = "A")
 	private char status;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Schema(description = "Data de Cadastro dos fornecedores. Gerado na criação de um novo produto")
 	private Date dataCadastro;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Schema(description = "Data de Atualização do usuário. Gerado na alteração de um usuário")
+	@Schema(description = "Data de Atualização do fornecedor. Gerado na alteração de um fornecedor")
 	private Date dataUltimaAlteracao;
 	
 	public Fornecedor() {
-		dataCadastro = Calendar.getInstance().getTime();
 	}
 
 	public long getId() {

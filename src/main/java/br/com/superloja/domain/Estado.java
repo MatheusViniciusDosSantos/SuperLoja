@@ -21,11 +21,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "categoria")
+@Table(name = "estado")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Getter
 @Setter
-public class Categoria implements Serializable {
+public class Estado implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,49 +33,24 @@ public class Categoria implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
-	@Schema(description = "Descrição/nome da categoria", example = "Laticínios")
+	@Schema(description = "Nome do estado", example = "São Paulo")
 	@NotBlank
-	private String descricao;
+	private String nome;
 	
-	@Schema(description = "Status da categoria", example = "A")
+	@Schema(description = "Sigla do estado", example = "SP")
+	@NotBlank
+	private String sigla;
+	
+	@Schema(description = "Status do estado", example = "A")
 	private char status;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Schema(description = "Data de Cadastro da categoria. Gerado na criação de uma nova categoria")
+	@Schema(description = "Data de Cadastro do estado. Gerado na criação de um novo estado")
 	private Date dataCadastro;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Schema(description = "Data de Atualização da categoria. Gerado na alteração de uma categoria")
+	@Schema(description = "Data de Atualização do estado. Gerado na alteração de um estado")
 	private Date dataUltimaAlteracao;
 	
-	public Categoria() {
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-	
-	public char getStatus() {
-		return status;
-	}
-
-	public void setStatus(char status) {
-		this.status = status;
-	}
-	
-	public Date getDataCadastro() {
-		return dataCadastro;
-	}
+	public Estado() {}
 }

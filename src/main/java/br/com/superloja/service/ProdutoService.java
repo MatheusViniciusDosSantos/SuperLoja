@@ -27,7 +27,6 @@ public class ProdutoService {
 		return produtoRepository.existsById(id);
 	}
 	
-	//
 	public void atualizarValorProdutoCategoria(Long idCategoria, Double percentual, String tipoOperacao) throws BadResourceException {
 		List<Produto> produtos = produtoRepository.buscarProdutosCategorias(idCategoria);
 		

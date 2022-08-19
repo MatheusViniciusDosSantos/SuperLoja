@@ -40,16 +40,15 @@ public class Marca implements Serializable {
 	@Schema(description = "Status da marca", example = "A")
 	private char status;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Schema(description = "Data de Cadastro da marca. Gerado na criação de uma nova marca")
 	private Date dataCadastro;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Schema(description = "Data de Atualização do usuário. Gerado na alteração de um usuário")
+	@Schema(description = "Data de Atualização da marca. Gerado na alteração de uma marca")
 	private Date dataUltimaAlteracao;
 	
-	public Marca() {
-		dataCadastro = Calendar.getInstance().getTime();
-	}
+	public Marca() {}
 
 	public long getId() {
 		return id;

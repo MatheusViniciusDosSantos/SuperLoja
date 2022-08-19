@@ -36,7 +36,7 @@ public class Permissao {
 	private Date dataCadastro;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Schema(description = "Data de Atualização do usuário. Gerado na alteração de um usuário")
+	@Schema(description = "Data de Atualização da permissão. Gerado na alteração de uma permissão")
 	private Date dataUltimaAlteracao;
 	
 }

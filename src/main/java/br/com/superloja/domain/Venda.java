@@ -29,7 +29,7 @@ public class Venda {
 	@Schema(description = "Desconto da venda")
 	private Double desconto;
 	
-	@Schema(description = "Usuario da compra")
+	@Schema(description = "Usuario da venda")
 	private Usuario usuario;
 	
 	@Schema(description = "Data e hora da venda")

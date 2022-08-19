@@ -36,7 +36,7 @@ public class Endereco {
 	@Schema(description = "Bairro do endereço do usuário", example = "Bela Vista")
 	private String neighborhood;
 	
-	@Schema(description = "Nome do usuário", example = "Avenida Paulista")
+	@Schema(description = "Rua do endereço do usuário", example = "Avenida Paulista")
 	private String street;
 	
 }
