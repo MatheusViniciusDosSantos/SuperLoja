@@ -3,12 +3,15 @@ package br.com.superloja.domain;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,6 +21,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,6 +51,10 @@ public class Usuario implements Serializable {
 	@Schema(description = "Senha do usuário, usada para acessar o sistema", example = "123456")
 	private String senha;
 	
+	@OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@Setter(value = AccessLevel.NONE)
+	private List<PermissaoUsuario> permissaoUsuarios;
+	
 	@Schema(description = "Status do usuário", example = "A")
 	private char status;
 	
@@ -66,5 +74,13 @@ public class Usuario implements Serializable {
 	private Date dataUltimaAlteracao;
 	
 	public Usuario() {}
+	
+	public void setPermissaoUsuario(List<PermissaoUsuario> pu) {
+		for (PermissaoUsuario p : pu) {
+			p.setUsuario(this);
+		}
+		
+		this.permissaoUsuarios = pu;
+	}
 
 }

@@ -2,7 +2,6 @@ package br.com.superloja.domain;
 
 import java.util.Date;
 
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,44 +11,45 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-@Embeddable
-@Table(name = "permissao_usuario")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+
 @Entity
+@Table(name = "produto_imagem")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Data
-public class PermissaoUsuario {
-	
+public class ProdutoImagem {
+
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
-	@ManyToOne
-	@Schema(description = "Usuário usado na associação", example = "{ \"id\" : 1, \"nome\" : \"José\"}")
-	@JsonIgnore
-	@JoinColumn(name = "idUsuario")
-	private Usuario usuario;
+	@Schema(description = "Nome da imagem do produto")
+	@NotBlank
+	private String nome;
 	
+	@Schema(description = "Descrição/nome da marca")
+	@NotBlank
 	@ManyToOne
-	@Schema(description = "Permissão usada na associação", example = "{ \"id\" : 1, \"descricao\" : \"Funcionario\"}")
-	@JoinColumn(name = "idPermissao")
-	private Permissao permissao;
+	@JoinColumn(name = "idProduto")
+	private Produto produto;
+	
+	@Schema(description = "Status da marca", example = "A")
+	private char status;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Schema(description = "Data de Cadastro da permissão do usuário.")
+	@Schema(description = "Data de Cadastro da imagem. Gerado na criação de uma nova imagem")
 	private Date dataCadastro;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Schema(description = "Data de Atualização da permissão do usuário.")
+	@Schema(description = "Data de Atualização da imagem. Gerado na alteração de uma imagem")
 	private Date dataUltimaAlteracao;
-	
-	
 }
