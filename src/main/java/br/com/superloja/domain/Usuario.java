@@ -48,10 +48,13 @@ public class Usuario implements Serializable {
 	@Schema(description = "E-mail do usuário, usado para acessar o sistema", example = "josesilva@gmail.com")
 	private String email;
 	
+	@Schema(description = "Código usado para recuperar senha do email informado")
+	private String codigoRecuperacaoSenha;
+	
 	@Schema(description = "Senha do usuário, usada para acessar o sistema", example = "123456")
 	private String senha;
 	
-	@OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToMany(mappedBy = "usuario", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@Setter(value = AccessLevel.NONE)
 	private List<PermissaoUsuario> permissaoUsuarios;
 	
@@ -64,6 +67,10 @@ public class Usuario implements Serializable {
 	@ManyToOne
 	@Schema(description = "Endereço do usuário")
 	private Endereco endereco;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Schema(description = "Data de envio do código de recuperação")
+	private Date dataEnvioCodogo;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Schema(description = "Data de Cadastro do usuário. Gerado na criação de um novo usuário")
