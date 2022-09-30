@@ -49,9 +49,7 @@ public class ItensVendaController {
     private ItensVendaService itensVendaService;
 
     @Operation(summary = "Busca itens da Venda", description = "Buscar todas os itens das vendas", tags = {"itens_venda"})
-    @GetMapping(value = "/itensVenda", consumes =
-            MediaType.APPLICATION_JSON_VALUE, produces =
-            MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/itensVenda")
     public ResponseEntity<Page<ItensVenda>> findAll(
             @Parameter(description = "Paginação", example = "{\"page\":0,\"size\":1}", allowEmptyValue = true)
             Pageable pageable)	{
@@ -64,8 +62,7 @@ public class ItensVendaController {
                     content = @Content(schema = @Schema(implementation = ItensVenda.class))),
             @ApiResponse(responseCode = "404", description = "Itens da venda não encontrados")
     })
-    @GetMapping(value = "/itensVenda/{id}", produces =
-            MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/itensVenda/{id}")
     public ResponseEntity<ItensVenda> findById(@PathVariable long id) {
         try {
             ItensVenda itensVenda = itensVendaService.findById(id);
@@ -125,18 +122,14 @@ public class ItensVendaController {
         }
     }
     
-    @GetMapping(value = "/itensVenda/venda/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<ItensVenda>> findByIdCompra(@PathVariable long id, Pageable pageable) throws ResourceNotFoundException {    	
-    	Page<ItensVenda> itensVenda = itensVendaService.findByIdVenda(id, pageable);
-            return ResponseEntity.ok(itensVenda);
-    }
+    
     @Operation(summary = "Busca itens de uma venda específica", description = "Buscar os itens de uma venda específica", tags = {"itens_venda"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Sucesso",
                     content = @Content(schema = @Schema(implementation = ItensVenda.class))),
             @ApiResponse(responseCode = "404", description = "Itens da venda específica não encontrados")
     })
-    @GetMapping(value = "/itensVenda/venda/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/itensVenda/venda/{id}")
     public ResponseEntity<Page<ItensVenda>> findByIdVenda(@PathVariable long id, Pageable pageable) {
 
         try {

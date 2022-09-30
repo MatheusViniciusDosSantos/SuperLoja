@@ -50,9 +50,7 @@ public class ItensCompraController {
     private ItensCompraService itensCompraService;
 
     @Operation(summary = "Busca itens da compra", description = "Buscar todas os itens das compras", tags = {"itens_compra"})
-    @GetMapping(value = "/itensCompra", consumes =
-            MediaType.APPLICATION_JSON_VALUE, produces =
-            MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/itensCompra")
     public ResponseEntity<Page<ItensCompra>> findAll(
             @Parameter(description = "Paginação", example = "{\"page\":0,\"size\":1}", allowEmptyValue = true)
             Pageable pageable)	{
@@ -65,8 +63,7 @@ public class ItensCompraController {
                     content = @Content(schema = @Schema(implementation = ItensCompra.class))),
             @ApiResponse(responseCode = "404", description = "Itens da compra não encontrados")
     })
-    @GetMapping(value = "/itensCompra/{id}", produces =
-            MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/itensCompra/{id}")
     public ResponseEntity<ItensCompra> findById(@PathVariable long id) {
         try {
             ItensCompra itensCompra = itensCompraService.findById(id);
@@ -132,7 +129,7 @@ public class ItensCompraController {
                     content = @Content(schema = @Schema(implementation = ItensCompra.class))),
             @ApiResponse(responseCode = "404", description = "Itens da compra específica não encontrados")
     })
-    @GetMapping(value = "/itensCompra/compra/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/itensCompra/compra/{id}")
     public ResponseEntity<Page<ItensCompra>> findByIdCompra(@PathVariable long id, Pageable pageable) {
 
         try {
