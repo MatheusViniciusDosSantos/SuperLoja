@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,9 +49,8 @@ public class EstadoController {
 	private EstadoService estadoService;
 	
 	@Operation(summary = "Busca estados", description = "Buscar todos os estados", tags = {"estado"})
-	@GetMapping(value = "/estado", consumes = 
-			MediaType.APPLICATION_JSON_VALUE, produces = 
-				MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/estado")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Page<Estado>> findAll(
 			@Parameter(description = "Paginação", example = "{\"page\":0,\"size\":1}", allowEmptyValue = true)
 			 Pageable pageable)	{
@@ -59,9 +59,8 @@ public class EstadoController {
 	}
 	
 	@Operation(summary = "Busca estado por sigla", description = "Buscar estado com a sigla determinada", tags = {"estado"})
-	@GetMapping(value = "/estado/{sigla}", consumes = 
-			MediaType.APPLICATION_JSON_VALUE, produces = 
-				MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/estado/{sigla}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Estado> findBySigla(
 			@Parameter(description = "Sigla para pesquisa", allowEmptyValue = true)
 			@PathVariable String sigla)	{
@@ -75,8 +74,8 @@ public class EstadoController {
 					content = @Content(schema = @Schema(implementation = Estado.class))),
 			@ApiResponse(responseCode = "404", description = "Estado não encontrado")
 	})
-	@GetMapping(value = "/estado/{id}", produces =
-			MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/estado/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Estado> findEstadoById(@PathVariable long id) {
 		try {
 			Estado estado = estadoService.findById(id);
@@ -91,6 +90,7 @@ public class EstadoController {
 	
 	@Operation(summary = "Adicionar estado", description = "Adicionar novo estado informado no banco de dados", tags = {"estado"})
 	@PostMapping(value = "/estado")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Estado> addEstado(@RequestBody Estado estado) throws URISyntaxException {
 		try {
 			Estado novaEstado = estadoService.save(estado);
@@ -106,6 +106,7 @@ public class EstadoController {
 	
 	@Operation(summary = "Alterar estado", description = "Alterar valores do estado com id selecionado", tags = {"estado"})
 	@PutMapping(value = "/estado/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Estado> updateEstado(@Valid @RequestBody Estado estado,
 			@PathVariable long id) {
 		try {
@@ -124,6 +125,7 @@ public class EstadoController {
 	
 	@Operation(summary = "Deletar estado", description = "Deletar estado com o ID informado", tags = {"estado"})
 	@DeleteMapping(path = "/estado/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Void> deleteEstadoById(@PathVariable long id) {
 		try {
 			estadoService.deleteById(id);
