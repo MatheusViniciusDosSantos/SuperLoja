@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,9 +49,8 @@ public class PermissaoController {
 	private PermissaoService permissaoService;
 	
 	@Operation(summary = "Busca permissoes", description = "Buscar todas as permissoes, buscar permissoes por descrição", tags = {"permissao"})
-	@GetMapping(value = "/permissao", consumes = 
-			MediaType.APPLICATION_JSON_VALUE, produces = 
-				MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/permissao")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Page<Permissao>> findAll(
 			@Parameter(description = "Descrição para pesquisa", allowEmptyValue = true)
 			@RequestBody(required=false) String descricao,
@@ -69,8 +69,8 @@ public class PermissaoController {
 					content = @Content(schema = @Schema(implementation = Permissao.class))),
 			@ApiResponse(responseCode = "404", description = "Permissao não encontrada")
 	})
-	@GetMapping(value = "/permissao/{id}", produces =
-			MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/permissao/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Permissao> findPermissaoById(@PathVariable long id) {
 		try {
 			Permissao permissao = permissaoService.findById(id);
@@ -85,6 +85,7 @@ public class PermissaoController {
 	
 	@Operation(summary = "Adicionar permissao", description = "Adicionar nova permissao informada no banco de dados", tags = {"permissao"})
 	@PostMapping(value = "/permissao")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Permissao> addPermissao(@RequestBody Permissao permissao) throws URISyntaxException {
 		try {
 			Permissao novaPermissao = permissaoService.save(permissao);
@@ -100,6 +101,7 @@ public class PermissaoController {
 	
 	@Operation(summary = "Alterar permissao", description = "Alterar valores da permissao com id selecionado", tags = {"permissao"})
 	@PutMapping(value = "/permissao/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Permissao> updatePermissao(@Valid @RequestBody Permissao permissao,
 			@PathVariable long id) {
 		try {
@@ -118,6 +120,7 @@ public class PermissaoController {
 	
 	@Operation(summary = "Deletar permissao", description = "Deletar permissao com o ID informado", tags = {"permissao"})
 	@DeleteMapping(path = "/permissao/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Void> deletePermissaoById(@PathVariable long id) {
 		try {
 			permissaoService.deleteById(id);

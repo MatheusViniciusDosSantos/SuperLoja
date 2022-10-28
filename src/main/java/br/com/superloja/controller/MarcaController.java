@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,9 +52,8 @@ public class MarcaController {
 	private MarcaService marcaService;
 	
 	@Operation(summary = "Busca marcas", description = "Buscar todas as marcas, buscar marcas por descrição", tags = {"marca"})
-	@GetMapping(value = "/marca", consumes = 
-			MediaType.APPLICATION_JSON_VALUE, produces = 
-				MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/marca")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Page<Marca>> findAll(
 			@Parameter(description = "Descrição para pesquisa", allowEmptyValue = true)
 			@RequestBody(required=false) String descricao,
@@ -72,8 +72,8 @@ public class MarcaController {
 					content = @Content(schema = @Schema(implementation = Marca.class))),
 			@ApiResponse(responseCode = "404", description = "Marca não encontrada")
 	})
-	@GetMapping(value = "/marca/{id}", produces =
-			MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/marca/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Marca> findMarcaById(@PathVariable long id) {
 		try {
 			Marca marca = marcaService.findById(id);
@@ -88,6 +88,7 @@ public class MarcaController {
 	
 	@Operation(summary = "Adicionar marca", description = "Adicionar nova marca informada no banco de dados", tags = {"marca"})
 	@PostMapping(value = "/marca")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Marca> addMarca(@RequestBody Marca marca) throws URISyntaxException {
 		try {
 			Marca novaMarca = marcaService.save(marca);
@@ -103,6 +104,7 @@ public class MarcaController {
 	
 	@Operation(summary = "Alterar marca", description = "Alterar valores da marca com id selecionado", tags = {"marca"})
 	@PutMapping(value = "/marca/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Marca> updateMarca(@Valid @RequestBody Marca marca,
 			@PathVariable long id) {
 		try {
@@ -121,6 +123,7 @@ public class MarcaController {
 	
 	@Operation(summary = "Deletar marca", description = "Deletar marca com o ID informado", tags = {"marca"})
 	@DeleteMapping(path = "/marca/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Void> deleteMarcaById(@PathVariable long id) {
 		try {
 			marcaService.deleteById(id);

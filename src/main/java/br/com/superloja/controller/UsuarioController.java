@@ -54,10 +54,7 @@ public class UsuarioController {
 	private UsuarioService usuarioService;
 	
 	@Operation(summary = "Busca usuarios", description = "Buscar todos os usuarios, buscar usuarios por nome", tags = {"usuario"})
-	@GetMapping(value = "/usuario", consumes = 
-			MediaType.APPLICATION_JSON_VALUE, produces = 
-				MediaType.APPLICATION_JSON_VALUE)
-
+	@GetMapping(value = "/usuario")
 	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Page<UsuarioDTO>> findAll(
 			@Parameter(description = "Descrição para pesquisa", allowEmptyValue = true)
@@ -77,9 +74,7 @@ public class UsuarioController {
 					content = @Content(schema = @Schema(implementation = Usuario.class))),
 			@ApiResponse(responseCode = "404", description = "Usuario não encontrado")
 	})
-	@GetMapping(value = "/usuario/{id}", produces =
-			MediaType.APPLICATION_JSON_VALUE)
-
+	@GetMapping(value = "/usuario/{id}")
 	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Usuario> findUsuarioById(@PathVariable long id) {
 		try {

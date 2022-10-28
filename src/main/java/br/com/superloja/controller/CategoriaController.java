@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,9 +52,8 @@ public class CategoriaController {
 	private CategoriaService categoriaService;
 	
 	@Operation(summary = "Busca categorias", description = "Buscar todas as categorias, buscar categorias por descrição", tags = {"categoria"})
-	@GetMapping(value = "/categoria", consumes = 
-			MediaType.APPLICATION_JSON_VALUE, produces = 
-				MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/categoria")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Page<Categoria>> findAll(
 			@Parameter(description = "Descrição para pesquisa", allowEmptyValue = true)
 			@RequestBody(required=false) String descricao,
@@ -72,8 +72,8 @@ public class CategoriaController {
 					content = @Content(schema = @Schema(implementation = Categoria.class))),
 			@ApiResponse(responseCode = "404", description = "Categoria não encontrada")
 	})
-	@GetMapping(value = "/categoria/{id}", produces =
-			MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/categoria/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Categoria> findCategoriaById(@PathVariable long id) {
 		try {
 			Categoria categoria = categoriaService.findById(id);
@@ -88,6 +88,7 @@ public class CategoriaController {
 	
 	@Operation(summary = "Adicionar categoria", description = "Adicionar nova categoria informada no banco de dados", tags = {"categoria"})
 	@PostMapping(value = "/categoria")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Categoria> addCategoria(@RequestBody Categoria categoria) throws URISyntaxException {
 		try {
 			Categoria novaCategoria = categoriaService.save(categoria);
@@ -103,6 +104,7 @@ public class CategoriaController {
 	
 	@Operation(summary = "Alterar categoria", description = "Alterar valores da categoria com id selecionado", tags = {"categoria"})
 	@PutMapping(value = "/categoria/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Categoria> updateCategoria(@Valid @RequestBody Categoria categoria,
 			@PathVariable long id) {
 		try {
@@ -121,6 +123,7 @@ public class CategoriaController {
 	
 	@Operation(summary = "Deletar categoria", description = "Deletar categoria com o ID informado", tags = {"categoria"})
 	@DeleteMapping(path = "/categoria/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Void> deleteCategoriaById(@PathVariable long id) {
 		try {
 			categoriaService.deleteById(id);

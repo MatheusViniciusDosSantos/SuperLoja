@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,9 +50,8 @@ public class ProdutoController {
 	private ProdutoService produtoService;
 	
 	@Operation(summary = "Busca produtos", description = "Buscar todos os Produtos, buscar produtos por descrição", tags = {"produto"})
-	@GetMapping(value = "/produto", consumes = 
-			MediaType.APPLICATION_JSON_VALUE, produces = 
-				MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/produto")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Page<Produto>> findAll(
 			@Parameter(description = "Descrição para pesquisa", allowEmptyValue = true)
 			@RequestBody(required=false) String descricao,
@@ -70,8 +70,8 @@ public class ProdutoController {
 					content = @Content(schema = @Schema(implementation = Produto.class))),
 			@ApiResponse(responseCode = "404", description = "Produto não encontrado")
 	})
-	@GetMapping(value = "/produto/{id}", produces =
-			MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/produto/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Produto> findProdutoById(@PathVariable long id) {
 		try {
 			Produto produto = produtoService.findById(id);
@@ -85,9 +85,8 @@ public class ProdutoController {
 	}
 	
 	@Operation(summary = "Busca produtos por marca", description = "Buscar produtos por Marca", tags = {"produto"})
-	@GetMapping(value = "/produto/{marca}", consumes = 
-			MediaType.APPLICATION_JSON_VALUE, produces = 
-				MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/produto/{marca}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Page<Produto>> findAllByMarca(
 			@Parameter(description = "Descrição da marca para pesquisa", allowEmptyValue = true)
 			@RequestBody(required=false) String marca,
@@ -102,9 +101,8 @@ public class ProdutoController {
 	}
 		
 		@Operation(summary = "Busca produtos", description = "Buscar produtos por categoria", tags = {"produto"})
-		@GetMapping(value = "/produto/{categoria}", consumes = 
-				MediaType.APPLICATION_JSON_VALUE, produces = 
-					MediaType.APPLICATION_JSON_VALUE)
+		@GetMapping(value = "/produto/{categoria}")
+		@CrossOrigin("http://localhost:3000")
 		public ResponseEntity<Page<Produto>> findAllByCategoria(
 				@Parameter(description = "Descrição da categoria para pesquisa", allowEmptyValue = true)
 				@RequestBody(required=false) String categoria,
@@ -118,9 +116,8 @@ public class ProdutoController {
 		}
 		
 		@Operation(summary = "Busca produtos", description = "Buscar produtos por id da categoria", tags = {"produto"})
-		@GetMapping(value = "/atualizarValorCategoria", consumes = 
-				MediaType.APPLICATION_JSON_VALUE, produces = 
-					MediaType.APPLICATION_JSON_VALUE)
+		@GetMapping(value = "/atualizarValorCategoria")
+		@CrossOrigin("http://localhost:3000")
 		public ResponseEntity<Void> atualizarValorProdutoCategoria(
 				@Parameter(description = "Id da categoria para pesquisa", allowEmptyValue = true)
 				@RequestBody(required=false) Long idCategoria,
@@ -142,6 +139,7 @@ public class ProdutoController {
 	
 	@Operation(summary = "Adicionar Produto", description = "Adicionar novo produto informado no banco de dados", tags = {"produto"})
 	@PostMapping(value = "/produto")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Produto> addProduto(@RequestBody Produto produto) throws URISyntaxException {
 		try {
 			Produto novoProduto = produtoService.save(produto);
@@ -157,6 +155,7 @@ public class ProdutoController {
 	
 	@Operation(summary = "Alterar Produto", description = "Alterar valores do produto com id selecionado", tags = {"produto"})
 	@PutMapping(value = "/produto/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Produto> updateProduto(@Valid @RequestBody Produto produto,
 			@PathVariable long id) {
 		try {
@@ -175,6 +174,7 @@ public class ProdutoController {
 	
 	@Operation(summary = "Deletar Produto", description = "Deletar Produto com o ID informado", tags = {"produto"})
 	@DeleteMapping(path = "/produto/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Void> deleteProdutoById(@PathVariable long id) {
 		try {
 			produtoService.deleteById(id);
