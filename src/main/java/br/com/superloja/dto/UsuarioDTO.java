@@ -1,10 +1,12 @@
 package br.com.superloja.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 
+import br.com.superloja.domain.PermissaoUsuario;
 import br.com.superloja.domain.Usuario;
 import lombok.Data;
 
@@ -14,6 +16,7 @@ public class UsuarioDTO {
 	private String nome;
 	private String cpf;
 	private String email;
+	private List<PermissaoUsuario> permissaoUsuarios;
 	private Date dataCadastro;
 	
 	public UsuarioDTO converter(Usuario usuario) {

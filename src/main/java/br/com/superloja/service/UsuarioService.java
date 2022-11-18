@@ -1,5 +1,6 @@
 package br.com.superloja.service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -67,15 +68,22 @@ public class UsuarioService {
 			if(existsById(usuario.getId())) {
 				throw new ResourceAlreadyExistsException("Usuario com id: " + usuario.getId() + " já existe.");
 			}
-			List<Permissao> permissoes = permissaoRepository.buscarPermissaoNome("funcionario");
+			List<Permissao> permissoes = new ArrayList<Permissao>();
+			for (PermissaoUsuario permissaoUsuario : usuario.getPermissaoUsuarios()) {
+				permissoes.add(permissaoUsuario.getPermissao());
+			}
+			
 			usuario.setStatus('A');
 			usuario.setDataCadastro(Calendar.getInstance().getTime());
 			Usuario usuarioNovo = usuarioRepository.save(usuario);
 			if (permissoes.size() > 0) {
 				PermissaoUsuario permissaoUsuario = new PermissaoUsuario();
-				permissaoUsuario.setPermissao(permissoes.get(0));
-				permissaoUsuario.setUsuario(usuarioNovo);
-				permissaoUsuarioRepository.save(permissaoUsuario);
+				for (Permissao permissao : permissoes) {
+					permissaoUsuario.setPermissao(permissao);
+					permissaoUsuario.setUsuario(usuarioNovo);
+					permissaoUsuarioRepository.save(permissaoUsuario);
+				}
+				
 			}
 			
 			return usuarioNovo;
