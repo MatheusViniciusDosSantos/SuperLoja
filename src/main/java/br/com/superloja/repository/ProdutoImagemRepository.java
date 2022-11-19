@@ -1,5 +1,7 @@
 package br.com.superloja.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +14,6 @@ public interface ProdutoImagemRepository extends JpaRepository<ProdutoImagem, Lo
 	@Query(value = "select p from ProdutoImagem p where p.nome like %?1%")
 	Page<ProdutoImagem> findByNome(String nome, Pageable page);
 	
-	//Page<Produto> findAll(Pageable page);
+	List<ProdutoImagem> findByProdutoId(Long id);
 }
 

@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.Cache;
@@ -41,6 +42,9 @@ public class ProdutoImagem {
 	@ManyToOne
 	@JoinColumn(name = "idProduto")
 	private Produto produto;
+	
+	@Transient
+	private byte[] arquivo;
 	
 	@Schema(description = "Status da marca", example = "A")
 	private char status;

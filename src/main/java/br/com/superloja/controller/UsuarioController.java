@@ -106,10 +106,12 @@ public class UsuarioController {
 	}
 	
 	@Operation(summary = "Alterar Usuario", description = "Alterar valores do usuario com id selecionado", tags = {"usuario"})
-	@PutMapping(value = "/usuario")
+	@PutMapping(value = "/usuario/{id}")
 	@CrossOrigin("http://localhost:3000")
-	public ResponseEntity<Usuario> updateUsuario(@Valid @RequestBody Usuario usuario) {
+	public ResponseEntity<Usuario> updateUsuario(@Valid @RequestBody Usuario usuario, 
+			@PathVariable long id) {
 		try {
+			usuario.setId(id);
 			usuarioService.update(usuario);
 			return ResponseEntity.ok().build();
 		} catch (ResourceNotFoundException ex) {

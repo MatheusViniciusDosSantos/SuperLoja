@@ -2,6 +2,7 @@ package br.com.superloja.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,9 +55,8 @@ public class ProdutoImagemController {
 	private ProdutoImagemService produtoImagemService;
 	
 	@Operation(summary = "Busca produtoImagens", description = "Buscar todas as produtoImagens, buscar produtoImagens por descrição", tags = {"produtoImagem"})
-	@GetMapping(value = "/produtoImagem", consumes = 
-			MediaType.APPLICATION_JSON_VALUE, produces = 
-				MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/produtoImagem")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Page<ProdutoImagem>> findAll(
 			@Parameter(description = "Descrição para pesquisa", allowEmptyValue = true)
 			@RequestBody(required=false) String nome,
@@ -74,8 +75,8 @@ public class ProdutoImagemController {
 					content = @Content(schema = @Schema(implementation = ProdutoImagem.class))),
 			@ApiResponse(responseCode = "404", description = "ProdutoImagem não encontrada")
 	})
-	@GetMapping(value = "/produtoImagem/{id}", produces =
-			MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/produtoImagem/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<ProdutoImagem> findProdutoImagemById(@PathVariable long id) {
 		try {
 			ProdutoImagem produtoImagem = produtoImagemService.findById(id);
@@ -88,8 +89,17 @@ public class ProdutoImagemController {
 	
 	}
 	
+	@Operation(summary = "Buscar produtoImagem", description = "Buscar produtoImagem com o ID do produto informado", tags = {"produtoImagem"})
+	@GetMapping(path = "/produtoImagem/produto/{id}")
+	@CrossOrigin("http://localhost:3000")
+	public List<ProdutoImagem> getProdutoImagemByProdutoId(@PathVariable long id) {
+		List<ProdutoImagem> produtoImagens = produtoImagemService.findByProdutoId(id);
+		return produtoImagens;
+	}
+	
 	@Operation(summary = "Adicionar produtoImagem", description = "Adicionar nova produtoImagem informada no banco de dados", tags = {"produtoImagem"})
 	@PostMapping(value = "/produtoImagem")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<ProdutoImagem> addProdutoImagem(@RequestParam("idProduto") Long idProduto, @RequestParam("file") MultipartFile file) throws Exception {
 		try {
 			ProdutoImagem novaProdutoImagem = produtoImagemService.save(idProduto, file);
@@ -105,6 +115,7 @@ public class ProdutoImagemController {
 	
 	@Operation(summary = "Alterar produtoImagem", description = "Alterar valores da produtoImagem com id selecionado", tags = {"produtoImagem"})
 	@PutMapping(value = "/produtoImagem/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<ProdutoImagem> updateProdutoImagem(@Valid @RequestBody ProdutoImagem produtoImagem,
 			@PathVariable long id) {
 		try {
@@ -123,6 +134,7 @@ public class ProdutoImagemController {
 	
 	@Operation(summary = "Deletar produtoImagem", description = "Deletar produtoImagem com o ID informado", tags = {"produtoImagem"})
 	@DeleteMapping(path = "/produtoImagem/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Void> deleteProdutoImagemById(@PathVariable long id) {
 		try {
 			produtoImagemService.deleteById(id);

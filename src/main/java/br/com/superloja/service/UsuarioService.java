@@ -101,8 +101,22 @@ public class UsuarioService {
 			if (!existsById(usuario.getId())) {
 				throw new ResourceNotFoundException("Usuario não encontrado com o id: " + usuario.getId());
 			}
+			List<Permissao> permissoes = new ArrayList<Permissao>();
+			for (PermissaoUsuario permissaoUsuario : usuario.getPermissaoUsuarios()) {
+				permissoes.add(permissaoUsuario.getPermissao());
+			}
+			
 			usuario.setDataUltimaAlteracao(Calendar.getInstance().getTime());
-			usuarioRepository.save(usuario);
+			Usuario usuarioNovo = usuarioRepository.save(usuario);
+			if (permissoes.size() > 0) {
+				PermissaoUsuario permissaoUsuario = new PermissaoUsuario();
+				for (Permissao permissao : permissoes) {
+					permissaoUsuario.setPermissao(permissao);
+					permissaoUsuario.setUsuario(usuarioNovo);
+					permissaoUsuarioRepository.save(permissaoUsuario);
+				}
+				
+			}
 		} else {
 			BadResourceException exe = new BadResourceException("Erro ao salvar aluno");
 			exe.addErrorMessage("Usuario esta vazio ou nulo");

@@ -1,11 +1,16 @@
 package br.com.superloja.service;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Calendar;
+import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,6 +53,20 @@ public class ProdutoImagemService {
 		return produtoImagemRepository.findAll(pageable);
 	}
 	
+	public List<ProdutoImagem> findByProdutoId(Long id) {
+		List<ProdutoImagem> listaProdutoImagens = produtoImagemRepository.findByProdutoId(id);
+		
+		for (ProdutoImagem produtoImagem : listaProdutoImagens) {
+			try (InputStream in = new FileInputStream("C:/Users/Aluno/workspace-m/imagens/" + produtoImagem.getNome())) {
+				produtoImagem.setArquivo(IOUtils.toByteArray(in));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return listaProdutoImagens;
+	}
+	
 	public Page<ProdutoImagem> findAllByNome(String descricao, Pageable page) {
 		Page<ProdutoImagem> produtoImagens = produtoImagemRepository.findByNome(descricao, page);
 		
@@ -65,7 +84,7 @@ public class ProdutoImagemService {
 					byte[] bytes = file.getBytes();
 					String imagemNome = String.valueOf(produto.getId()) + file.getOriginalFilename();
 					Path caminho = Paths 
-							.get("C:/Users/Aluno/workspace-m/imagens" + imagemNome);
+							.get("C:/Users/Aluno/workspace-m/imagens/" + imagemNome);
 					Files.write(caminho, bytes);
 					
 					produtoImagem.setNome(imagemNome);
