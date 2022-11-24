@@ -37,8 +37,7 @@ public class ProdutoImagem {
 	@NotBlank
 	private String nome;
 	
-	@Schema(description = "Descrição/nome da marca")
-	@NotBlank
+	@Schema(description = "Produto")
 	@ManyToOne
 	@JoinColumn(name = "idProduto")
 	private Produto produto;
@@ -46,7 +45,7 @@ public class ProdutoImagem {
 	@Transient
 	private byte[] arquivo;
 	
-	@Schema(description = "Status da marca", example = "A")
+	@Schema(description = "Status da imagem", example = "A")
 	private char status;
 	
 	@Temporal(TemporalType.TIMESTAMP)

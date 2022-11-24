@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import br.com.superloja.domain.HistoricoValorProduto;
 import br.com.superloja.domain.Produto;
 
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {

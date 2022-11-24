@@ -45,8 +45,13 @@ public class HistoricoValorProdutoService {
 //		 q.setFirstResult(start);
 //		 q.setMaxResults(maxRows);
 		 List<HistoricoValorProduto> listaHistorico = new ArrayList<>();
-		 listaHistorico = historicoValorProdutoRepository.findByProdutoIdOrdenadoData(produto.getId());
-		 HistoricoValorProduto historicoValorProduto = listaHistorico.get(0);
+		 HistoricoValorProduto historicoValorProduto;
+		 if (historicoValorProdutoRepository.findByProdutoIdOrdenadoData(produto.getId()) != null) {
+			 listaHistorico = historicoValorProdutoRepository.findByProdutoIdOrdenadoData(produto.getId());
+			 historicoValorProduto = listaHistorico.get(0);
+		 } else {
+			 historicoValorProduto = new HistoricoValorProduto();
+		 }		 
 			historicoValorProduto.setProduto(produto);
 			historicoValorProduto.setValorCusto(produto.getValorCusto());
 			historicoValorProduto.setValorVenda(produto.getValorVenda());

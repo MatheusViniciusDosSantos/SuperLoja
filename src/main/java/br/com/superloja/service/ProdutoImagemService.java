@@ -75,7 +75,8 @@ public class ProdutoImagemService {
 	
 	public ProdutoImagem save(Long idProduto, MultipartFile file) throws BadResourceException, ResourceAlreadyExistsException, Exception {
 		if(!StringUtils.isEmpty(idProduto.toString())) {
-			Produto produto = produtoRepository.findById(idProduto).get();
+			Produto produto = new Produto();
+			produto = produtoRepository.findById(idProduto).get();			
 			ProdutoImagem produtoImagem = new ProdutoImagem();
 			
 			try {
