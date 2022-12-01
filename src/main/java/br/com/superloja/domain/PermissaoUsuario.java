@@ -15,6 +15,7 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.security.core.GrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,7 +27,7 @@ import lombok.Data;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
 @Data
-public class PermissaoUsuario {
+public class PermissaoUsuario implements GrantedAuthority {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -50,6 +51,11 @@ public class PermissaoUsuario {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Schema(description = "Data de Atualização da permissão do usuário.")
 	private Date dataUltimaAlteracao;
+
+	@Override
+	 public String getAuthority() {        
+        return permissao.getDescricao();
+    }
 	
 	
 }

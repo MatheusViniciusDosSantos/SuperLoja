@@ -2,11 +2,13 @@ package br.com.superloja.domain;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +21,8 @@ import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
@@ -30,7 +34,7 @@ import lombok.Setter;
 @Table(name = "usuario")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Data
-public class Usuario implements Serializable {
+public class Usuario implements Serializable, UserDetails {
 
 	private static final long serialVersionUID = 1L;
 
@@ -54,7 +58,7 @@ public class Usuario implements Serializable {
 	@Schema(description = "Senha do usuário, usada para acessar o sistema", example = "123456")
 	private String senha;
 	
-	@OneToMany(mappedBy = "usuario", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
 	@Setter(value = AccessLevel.NONE)
 	private List<PermissaoUsuario> permissaoUsuarios;
 	
@@ -70,7 +74,7 @@ public class Usuario implements Serializable {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Schema(description = "Data de envio do código de recuperação")
-	private Date dataEnvioCodogo;
+	private Date dataEnvioCodigo;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Schema(description = "Data de Cadastro do usuário. Gerado na criação de um novo usuário")
@@ -89,5 +93,40 @@ public class Usuario implements Serializable {
 		
 		this.permissaoUsuarios = pu;
 	}
+	
+	 @Override
+	    public String getPassword() {
+	        return senha;
+	    }
+
+	    @Override
+	    public String getUsername() {
+	        return email;
+	    }
+
+	    @Override
+	    public boolean isAccountNonExpired() {       
+	        return true;
+	    }
+
+	    @Override
+	    public boolean isAccountNonLocked() {
+	        return true;
+	    }
+
+	    @Override
+	    public boolean isCredentialsNonExpired() {
+	        return true;
+	    }
+
+	    @Override
+	    public boolean isEnabled() {
+	        return true;
+	    }
+
+		@Override
+		public Collection<? extends GrantedAuthority> getAuthorities() {
+			return permissaoUsuarios;
+		}
 
 }
