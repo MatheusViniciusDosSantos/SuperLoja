@@ -41,7 +41,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and().authorizeRequests().antMatchers("/api/pessoa-gerenciamento/**").permitAll()
-        .antMatchers("/api/pessoa/**").hasAnyAuthority("gerente")
+        .antMatchers("/api/usuario/**").hasAnyAuthority("Administrador")
         .anyRequest().authenticated();
 
         http.addFilterBefore(authFilterToken(), UsernamePasswordAuthenticationFilter.class);

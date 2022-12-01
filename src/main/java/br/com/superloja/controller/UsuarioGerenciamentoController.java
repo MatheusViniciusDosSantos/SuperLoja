@@ -23,7 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 @RestController
 @RequestMapping("/api/usuarioGerenciamento")
-@CrossOrigin
+@CrossOrigin("http://localhost:3000")
 @Tag(name = "usuarioGerenciamento", description = "API de Gerenciamento do usuário")
 public class UsuarioGerenciamentoController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -48,8 +48,8 @@ public class UsuarioGerenciamentoController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Usuario usuario){
-      Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usuario.getEmail(), usuario.getSenha()));
+    public ResponseEntity<?> login(@RequestBody String email, @RequestBody String senha){
+      Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, senha));
       SecurityContextHolder.getContext().setAuthentication(authentication);
       Usuario autenticado = (Usuario) authentication.getPrincipal();
       String token = jwtUtil.gerarTokenUsername(autenticado);

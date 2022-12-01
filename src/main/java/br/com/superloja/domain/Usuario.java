@@ -58,7 +58,7 @@ public class Usuario implements Serializable, UserDetails {
 	@Schema(description = "Senha do usuário, usada para acessar o sistema", example = "123456")
 	private String senha;
 	
-	@OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "usuario", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
 	@Setter(value = AccessLevel.NONE)
 	private List<PermissaoUsuario> permissaoUsuarios;
 	
