@@ -9,13 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.superloja.domain.Usuario;
 import br.com.superloja.security.JwtUtil;
 import br.com.superloja.service.UsuarioGerenciamentoService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,7 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 @RestController
 @RequestMapping("/api/usuarioGerenciamento")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin
 @Tag(name = "usuarioGerenciamento", description = "API de Gerenciamento do usuário")
 public class UsuarioGerenciamentoController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -48,8 +48,8 @@ public class UsuarioGerenciamentoController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody String email, @RequestBody String senha){
-      Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, senha));
+    public ResponseEntity<?> login(@RequestBody Usuario usuario){
+      Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usuario.getEmail(), usuario.getSenha()));
       SecurityContextHolder.getContext().setAuthentication(authentication);
       Usuario autenticado = (Usuario) authentication.getPrincipal();
       String token = jwtUtil.gerarTokenUsername(autenticado);

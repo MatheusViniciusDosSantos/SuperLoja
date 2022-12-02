@@ -37,16 +37,15 @@ public AuthenticationManager authenticationManager(AuthenticationConfiguration a
 
 @Bean
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-    http.cors().and().csrf().disable()
-        .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and().authorizeRequests().antMatchers("/api/pessoa-gerenciamento/**").permitAll()
-        .antMatchers("/api/usuario/**").hasAnyAuthority("Administrador")
-        .anyRequest().authenticated();
+   http.cors().and().csrf().disable()
+       .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+       .and().authorizeRequests().antMatchers("/api/pessoa-gerenciamento/**").permitAll()
+       .antMatchers("/api/usuario/**").permitAll();
 
-        http.addFilterBefore(authFilterToken(), UsernamePasswordAuthenticationFilter.class);
+       http.addFilterBefore(authFilterToken(), UsernamePasswordAuthenticationFilter.class);
 
-    return http.build();
+   return http.build();
 }
-    
+   
 }
